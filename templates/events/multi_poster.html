@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Library Event Series</title>
+    <style>
+        @page {
+            size: a4 portrait;
+            margin: 1.5cm;
+        }
+        
+        body {
+            font-family: 'Helvetica', 'Arial', sans-serif;
+            color: #1d1a49; 
+            margin: 0;
+            padding: 0;
+        }
+
+        /* --- HEADER AREA --- */
+        .header-table {
+            width: 100%;
+            margin-bottom: 2cm;
+        }
+        
+        .header-title-cell {
+            width: 65%;
+            vertical-align: top;
+        }
+        
+        .header-qr-cell {
+            width: 35%;
+            vertical-align: top;
+            text-align: right; /* Aligns QR to the right edge */
+        }
+
+        /* Dynamic Custom Title */
+        .main-title {
+            font-size: 38pt; /* Slightly smaller to fit custom text comfortably */
+            font-weight: 900;
+            color: #0d47a1; /* MSU Blue */
+            text-transform: uppercase;
+            line-height: 1.1;
+            margin: 0;
+            word-wrap: break-word; /* Prevents long words from spilling over */
+        }
+
+        .sub-title {
+            font-size: 18pt;
+            color: #ffb347; /* MSU Gold/Warm accent */
+            margin-top: 15px;
+            font-weight: 600;
+        }
+        
+        /* Logo & QR Styling */
+        .msu-logo {
+            width: 120px;
+            height: auto;
+            margin-bottom: 20px;
+        }
+
+        .qr-heading {
+            font-size: 16pt;
+            font-weight: 700;
+            margin-bottom: 5px;
+            color: #0d47a1;
+        }
+
+        .qr-image {
+            width: 140px;
+            height: 140px;
+            border: 2px solid #0d47a1;
+            padding: 5px;
+        }
+
+        /* --- 2x2 GRID AREA --- */
+        .grid-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0.8cm; 
+        }
+        
+        .event-box {
+            width: 50%;
+            background-color: #eaf0f8; /* Soft blue background */
+            border: 3px solid #0d47a1; /* MSU Blue border */
+            padding: 1cm;
+            vertical-align: top;
+            text-align: center;
+        }
+
+        .event-date {
+            font-size: 22pt;
+            font-weight: bold;
+            color: #000;
+            margin-bottom: 0.5cm;
+        }
+
+        .inner-box {
+            background-color: #ffffff; 
+            border: 1px solid #0d47a1;
+            padding: 0.5cm;
+            min-height: 5cm;
+        }
+
+        .event-title {
+            font-size: 14pt;
+            font-weight: bold;
+            margin-bottom: 0.5cm;
+            line-height: 1.3;
+        }
+
+        .event-desc {
+            font-size: 12pt;
+            line-height: 1.4;
+            color: #2c4258;
+        }
+    </style>
+</head>
+<body>
+
+    <table class="header-table">
+        <tr>
+            <td class="header-title-cell">
+                <img src="{{ logo_url }}" alt="MSU Logo" class="msu-logo"><br>
+                
+                <h1 class="main-title">{{ custom_heading|upper }}</h1>
+                
+                <div class="sub-title">Empowering your academic journey<br>at the MSU Library</div>
+            </td>
+            <td class="header-qr-cell">
+                <div class="qr-heading" style="margin-top: 40px;">Scan to Register:</div>
+                <img src="{{ qr_code }}" alt="QR Code" class="qr-image">
+            </td>
+        </tr>
+    </table>
+
+    <table class="grid-table">
+        <tr>
+            {% for event in events %}
+                <td class="event-box">
+                    <div class="event-date">{{ event.date|date:"j F" }}</div>
+                    
+                    <div class="inner-box">
+                        <div class="event-title">{{ event.title }}</div>
+                        <div class="event-desc">{{ event.description|truncatewords:20 }}</div>
+                    </div>
+                </td>
+                
+                {% if forloop.counter|divisibleby:2 and not forloop.last %}
+                    </tr><tr>
+                {% endif %}
+            {% endfor %}
+        </tr>
+    </table>
+
+</body>
+</html>

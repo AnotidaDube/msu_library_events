@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ event.title }} Program</title>
+    <style>
+        @page {
+            size: a4 landscape; /* Flips the PDF horizontally! */
+            margin: 1.5cm;
+        }
+        
+        body {
+            font-family: 'Helvetica', 'Arial', sans-serif;
+            color: #1d1a49;
+        }
+
+        /* --- HEADER SECTION --- */
+        .header-table {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .logo-cell {
+            width: 25%;
+            text-align: center;
+            vertical-align: top;
+            border-right: 4px solid #0d47a1;
+            padding-right: 15px;
+        }
+
+        .details-cell {
+            width: 75%;
+            vertical-align: top;
+            padding-left: 20px;
+        }
+
+        .banner-box {
+            background-color: #0d47a1; /* MSU Blue */
+            color: white;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .event-title {
+            margin: 0;
+            font-size: 26pt;
+            text-transform: uppercase;
+            font-weight: 900;
+        }
+
+        .event-category {
+            font-size: 14pt;
+            margin-top: 5px;
+            color: #ffb347;
+        }
+
+        .meta-table {
+            width: 100%;
+            color: #0d47a1;
+            font-weight: bold;
+            font-size: 13pt;
+        }
+
+        .meta-table td {
+            padding: 4px 0;
+        }
+
+        /* --- AGENDA TABLE SECTION --- */
+        .agenda-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .agenda-table th {
+            background-color: #0d47a1;
+            color: white;
+            padding: 10px;
+            text-align: left;
+            font-size: 14pt;
+            border: 1px solid #0d47a1;
+        }
+
+        .agenda-table td {
+            padding: 12px 10px;
+            border: 1px solid #cdd9e6;
+            font-size: 12pt;
+        }
+
+        .time-col {
+            background-color: #eaf0f8;
+            font-weight: bold;
+            width: 20%;
+        }
+
+        .activity-col {
+            background-color: #f8fafc;
+            width: 45%;
+        }
+
+        .speaker-col {
+            background-color: #f8fafc;
+            width: 35%;
+        }
+    </style>
+</head>
+<body>
+
+    <table class="header-table">
+        <tr>
+            <td class="logo-cell">
+                <img src="http://127.0.0.1:8000/static/images/msu_logo.jpg" style="width: 150px; height: auto; margin-bottom: 10px;">
+                
+            </td>
+            
+            <td class="details-cell">
+                <div class="banner-box">
+                    <h1 class="event-title">{{ event.title }}</h1>
+                    <div class="event-category">TRANSFORM RESEARCH, TEACHING, AND LEARNING</div>
+                </div>
+                
+                <table class="meta-table">
+                    <tr><td style="width: 15%;">DATE:</td><td>{{ event.date|date:"j F Y" }}</td></tr>
+                    <tr><td>TIME:</td><td>{{ event.start_time|time:"H:i" }} Hours</td></tr>
+                    <tr><td>VENUE:</td><td>{{ event.location }}</td></tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+
+    <table class="agenda-table">
+        <thead>
+            <tr>
+                <th>Time</th>
+                <th>Activity</th>
+                <th>Speaker</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in agenda_items %}
+            <tr>
+                <td class="time-col">
+                    {{ item.start_time|time:"H:i" }} {% if item.end_time %}- {{ item.end_time|time:"H:i" }}{% endif %}
+                </td>
+                <td class="activity-col">{{ item.activity }}</td>
+                <td class="speaker-col">{{ item.speaker|default:"-" }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="3" style="text-align: center; padding: 20px;">No agenda items have been added to this event yet. Add them in the Admin Dashboard.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</body>
+</html>

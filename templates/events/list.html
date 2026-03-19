@@ -1,0 +1,233 @@
+{% extends 'base.html' %}
+
+{% block title %}Midlands State University Library · Events{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* filter toolbar */
+    .filter-bar {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 2.5rem;
+        background: white;
+        padding: 1rem 1.8rem;
+        border-radius: 60px;
+        box-shadow: 0 6px 14px rgba(0, 20, 30, 0.08);
+    }
+
+    .filter-label {
+        font-weight: 600;
+        color: #0d47a1;
+        margin-right: 8px;
+        font-size: 1rem;
+    }
+
+    .filter-btn {
+        background: #ffffff;
+        border: 1px solid #cdd9e6;
+        color: #0d47a1;
+        font-size: 0.95rem;
+        font-weight: 500;
+        padding: 0.5rem 1.3rem;
+        border-radius: 40px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+    }
+
+    .filter-btn i { margin-right: 6px; font-size: 0.9rem; }
+    .filter-btn:hover { background: #eaf0f8; border-color: #9bb5d4; }
+
+    /* Active button UPDATED TO MSU BLUE */
+    .filter-btn.active {
+        background: #0d47a1;
+        color: white;
+        border-color: #0d47a1;
+        box-shadow: 0 6px 10px rgba(13, 71, 161, 0.2);
+    }
+
+    .event-counter {
+        margin-left: auto;
+        background: #f0f4fa;
+        padding: 0.4rem 1.2rem;
+        border-radius: 30px;
+        font-size: 0.95rem;
+        color: #0d47a1;
+        font-weight: 500;
+    }
+
+    .event-counter i { margin-right: 6px; color: #ff8c42; }
+
+    /* events grid (cards) */
+    .events-container { display: flex; flex-direction: column; gap: 1.5rem; }
+
+    .event-card {
+        background: white;
+        border-radius: 28px;
+        padding: 1.2rem 1.8rem 1.2rem 1.5rem;
+        display: flex;
+        align-items: flex-start;
+        gap: 1.5rem;
+        box-shadow: 0 12px 24px -8px rgba(0, 30, 50, 0.12);
+        transition: transform 0.15s, box-shadow 0.2s;
+        border: 1px solid rgba(255,255,255,0.6);
+        backdrop-filter: blur(2px);
+    }
+
+    .event-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 22px 32px -10px rgba(20, 50, 80, 0.2);
+    }
+
+    /* left date bubble UPDATED TO MSU BLUE */
+    .event-date {
+        background: #0d47a1;
+        color: white;
+        min-width: 85px;
+        width: 85px;
+        padding: 0.9rem 0.2rem;
+        border-radius: 30px;
+        text-align: center;
+        box-shadow: 0 6px 0 #082b63;
+        flex-shrink: 0;
+        transition: background 0.1s;
+    }
+
+    .event-day { display: block; font-size: 2.6rem; font-weight: 700; line-height: 1; letter-spacing: -1px; }
+    .event-month { font-size: 1.2rem; text-transform: uppercase; font-weight: 500; letter-spacing: 1px; opacity: 0.9; }
+
+    .event-details { flex: 1; }
+    .event-title { font-size: 1.7rem; font-weight: 600; color: #0f2a3f; margin-bottom: 0.5rem; line-height: 1.2; }
+    
+    .event-meta { display: flex; align-items: center; gap: 1.2rem; flex-wrap: wrap; margin: 0.7rem 0 0.5rem; color: #3a546d; font-size: 1rem; }
+    .event-meta-item { display: flex; align-items: center; gap: 6px; background: #f0f6fd; padding: 0.3rem 0.9rem; border-radius: 30px; }
+    .event-meta-item i { color: #ff8c42; width: 1.2rem; font-size: 1rem; }
+
+    .event-description { color: #2c4258; font-size: 1.05rem; margin: 0.8rem 0 0.8rem; line-height: 1.5; max-width: 75ch; border-left: 3px solid #dde7f0; padding-left: 1.2rem; }
+    .event-footer { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; margin-top: 0.5rem; }
+
+    .category-badge { font-size: 0.85rem; font-weight: 600; padding: 0.4rem 1.2rem; border-radius: 40px; color: white; text-transform: capitalize; letter-spacing: 0.3px; box-shadow: inset 0 -1px 3px rgba(0,0,0,0.1); }
+    
+    /* category colors */
+    .cat-undergraduates { background: #f3aa5a; }
+    .cat-postgraduates { background: #2aa876; }
+    .cat-academic { background: #c0576b; }
+    .cat-library { background: #9b6fc4; }
+    .cat-default { background: #597a9d; }
+
+    .more-link {
+        color: #0d47a1;
+        font-weight: 500;
+        text-decoration: none;
+        border-bottom: 2px solid #ffb85c;
+        padding-bottom: 2px;
+        transition: 0.15s;
+    }
+
+    .more-link:hover { color: #ff8c42; border-bottom-color: #0d47a1; }
+    .hidden { display: none !important; }
+
+    @media (max-width: 650px) {
+        .event-card { flex-direction: column; align-items: stretch; padding: 1.5rem; }
+        .event-date { display: flex; width: 100%; min-width: 100%; align-items: center; justify-content: center; gap: 8px; padding: 0.5rem; border-radius: 40px; }
+        .event-day { font-size: 2.2rem; }
+        .event-month { font-size: 1.3rem; }
+        .filter-bar { border-radius: 30px; padding: 1rem 1.2rem; }
+        .event-meta { gap: 0.8rem; }
+        .event-title { font-size: 1.5rem; }
+    }
+    @media (max-width: 480px) {
+        .filter-btn { padding: 0.4rem 1rem; font-size: 0.85rem; }
+        .event-counter { margin-left: 0; width: 100%; text-align: center; }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div style="border-bottom: 2px solid #f0f4fa; padding-bottom: 1.5rem; margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+    
+    <div>
+        <h1 style="font-size: 2.2rem; color: #0f2a3f; font-weight: 700; margin-bottom: 0.5rem;">Library Events & Workshops</h1>
+        <p style="color: #5c6f87; font-size: 1.1rem;">Discover storytimes, workshops & community gatherings.</p>
+    </div>
+    
+    <form action="{% url 'events:series_poster' %}" method="GET" target="_blank" style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center; background: white; padding: 0.4rem; border-radius: 50px; border: 1px solid #cdd9e6; box-shadow: 0 4px 10px rgba(0,20,30,0.03);">
+        
+        <input type="text" name="heading" placeholder="Custom Poster Heading..." style="padding: 0.6rem 1.2rem; border-radius: 40px; border: none; font-size: 0.95rem; min-width: 240px; outline: none; background: #f4f7fb; color: #0f2a3f;">
+        
+        <button type="submit" style="background: #0d47a1; color: white; padding: 0.6rem 1.2rem; border-radius: 40px; border: none; font-weight: 600; cursor: pointer; transition: background 0.2s; display: inline-flex; align-items: center; gap: 8px;">
+            <i class="fas fa-file-pdf"></i> Generate
+        </button>
+        
+    </form>
+    
+</div>
+
+<div class="filter-bar">
+    <span class="filter-label"><i class="fas fa-filter"></i> show:</span>
+    <button class="filter-btn active" onclick="filterEvents('All')"><i class="fas fa-globe"></i> All</button>
+    {% for cat in categories %}
+        <button class="filter-btn" onclick="filterEvents('{{ cat.slug }}')">{{ cat.name }}</button>
+    {% endfor %}
+    <span class="event-counter"><i class="far fa-calendar-alt"></i> <span id="count-num">{{ events|length }}</span> upcoming</span>
+</div>
+
+<div class="events-container" id="events-container">
+    {% for ev in events %}
+        <div class="event-card" data-category="{{ ev.category.slug|default:'none' }}">
+            <div class="event-date">
+                <span class="event-day">{{ ev.date|date:"j" }}</span>
+                <span class="event-month">{{ ev.date|date:"M" }}</span>
+            </div>
+            <div class="event-details">
+                <h2 class="event-title">{{ ev.title }}</h2>
+                <div class="event-meta">
+                    <span class="event-meta-item"><i class="far fa-calendar"></i> {{ ev.date|date:"F j, Y" }}</span>
+                    <span class="event-meta-item"><i class="far fa-clock"></i> {{ ev.start_time|time:"g:i A" }} - {{ ev.end_time|time:"g:i A" }}</span>
+                    <span class="event-meta-item"><i class="fas fa-map-marker-alt"></i> {{ ev.location }}</span>
+                </div>
+                <p class="event-description">{{ ev.description|truncatewords:40 }}</p>
+                <div class="event-footer">
+                    <span class="category-badge cat-{{ ev.category.slug|default:'default' }}">{{ ev.category.name|default:"General" }}</span>
+                    <a href="{% url 'events:detail' ev.slug %}" class="more-link"><i class="fas fa-chevron-circle-right"></i> event details</a>
+                </div>
+            </div>
+        </div>
+    {% empty %}
+        <div style="background: white; border-radius: 50px; padding: 3rem 2rem; text-align: center; color: #5c6f87; font-size: 1.3rem; box-shadow: 0 6px 18px rgba(0,0,0,0.05);">
+            <i class="far fa-calendar-times" style="font-size: 3rem; opacity: 0.5; margin-bottom: 1rem;"></i><br>
+            No upcoming events. Check back soon!
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function filterEvents(categorySlug) {
+        // Update active button styling
+        const buttons = document.querySelectorAll('.filter-btn');
+        buttons.forEach(btn => btn.classList.remove('active'));
+        event.currentTarget.classList.add('active');
+
+        // Filter the cards
+        const cards = document.querySelectorAll('.event-card');
+        let visibleCount = 0;
+
+        cards.forEach(card => {
+            if (categorySlug === 'All' || card.getAttribute('data-category') === categorySlug) {
+                card.classList.remove('hidden');
+                visibleCount++;
+            } else {
+                card.classList.add('hidden');
+            }
+        });
+
+        // Update counter
+        document.getElementById('count-num').innerText = visibleCount;
+    }
+</script>
+{% endblock %}

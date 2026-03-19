@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+
+{% block title %}Monthly Calendar - MSU Library{% endblock %}
+
+{% block extra_css %}
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js"></script>
+
+<style>
+    .calendar-container {
+        background: white;
+        border-radius: 28px;
+        padding: 2.5rem;
+        box-shadow: 0 12px 24px -8px rgba(0, 30, 50, 0.12);
+        margin-top: 1rem;
+        border: 1px solid rgba(255,255,255,0.6);
+    }
+    
+    .fc-toolbar-title {
+        color: #0f2a3f !important;
+        font-weight: 700 !important;
+    }
+    
+    .fc-button-primary {
+        background-color: #0d47a1 !important;
+        border-color: #0d47a1 !important;
+        text-transform: capitalize !important;
+    }
+
+    .fc-button-primary:hover {
+        background-color: #082b63 !important;
+    }
+    
+    .fc-event {
+        cursor: pointer;
+        padding: 4px;
+        border-radius: 4px;
+        font-weight: 500;
+        font-size: 0.85em;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="calendar-container">
+    <div style="margin-bottom: 2rem;">
+        <h1 style="font-size: 2.2rem; color: #0f2a3f; font-weight: 700;">Library Events Calendar</h1>
+        <p style="color: #5c6f87; font-size: 1.1rem;">View all upcoming workshops, seminars, and training sessions at a glance.</p>
+    </div>
+
+    <div id="calendar"></div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar');
+        
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
+            headerToolbar: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'dayGridMonth,timeGridWeek,listMonth'
+            },
+            height: 'auto',
+            // Point the calendar to our Django JSON API
+            events: '/api/calendar-data/',
+            
+            // Open event details when clicked
+            eventClick: function(info) {
+                if (info.event.url) {
+                    window.location.href = info.event.url;
+                    info.jsEvent.preventDefault();
+                }
+            }
+        });
+        
+        calendar.render();
+    });
+</script>
+{% endblock %}

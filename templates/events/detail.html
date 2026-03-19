@@ -1,0 +1,196 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ event.title }} - MSU Library{% endblock %}
+
+{% block extra_css %}
+<style>
+    .detail-container {
+        background: white;
+        border-radius: 28px;
+        padding: 2.5rem;
+        box-shadow: 0 12px 24px -8px rgba(0, 30, 50, 0.12);
+        margin-top: 1rem;
+        border: 1px solid rgba(255,255,255,0.6);
+    }
+    
+    .back-link {
+        display: inline-block;
+        color: #0d47a1;
+        text-decoration: none;
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+        transition: color 0.2s;
+    }
+    
+    .back-link:hover { color: #ff8c42; }
+
+    .detail-header {
+        border-bottom: 2px solid #f0f4fa;
+        padding-bottom: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .detail-title {
+        font-size: 2.2rem;
+        color: #0f2a3f;
+        font-weight: 700;
+        margin-bottom: 1rem;
+    }
+
+    .detail-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1.5rem;
+        color: #3a546d;
+        font-size: 1.1rem;
+    }
+
+    .detail-meta i { color: #ff8c42; margin-right: 6px; }
+
+    .poster-container img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 16px;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .detail-description {
+        font-size: 1.15rem;
+        color: #2c4258;
+        line-height: 1.7;
+        margin-bottom: 2rem;
+    }
+
+    .register-btn {
+        background: #0d47a1;
+        color: white;
+        padding: 1rem 2rem;
+        border-radius: 40px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        text-decoration: none;
+        display: inline-block;
+        transition: background 0.2s;
+        border: none;
+        cursor: pointer;
+    }
+
+    .register-btn:hover { background: #082b63; }
+    
+    /* Input Styling */
+    input[type="text"], input[type="email"], select, textarea {
+        width: 100%;
+        padding: 0.8rem 1rem;
+        border: 1px solid #cdd9e6;
+        border-radius: 12px;
+        font-size: 1rem;
+        background: #fff;
+        transition: border 0.2s;
+    }
+    input:focus { border-color: #0d47a1; outline: none; background: #f0f6fd; }
+
+    .admin-card {
+        margin-top: 3rem;
+        padding: 2rem;
+        background: #fff8f0;
+        border-radius: 20px;
+        border: 1px solid #ffe0b2;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="detail-container">
+    
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+        <a href="{% url 'events:list' %}" class="back-link" style="margin-bottom: 0;"><i class="fas fa-arrow-left"></i> Back to All Events</a>
+        
+        <div style="display: flex; gap: 10px;">
+            {% if event.agenda_items.exists %}
+            <a href="{% url 'events:itinerary' event.slug %}" target="_blank" style="background: #eaf6f1; color: #1e7e56; padding: 0.5rem 1rem; border-radius: 8px; text-decoration: none; font-weight: 600; border: 1px solid #bce3d1;">
+                <i class="fas fa-list-alt"></i> Itinerary
+            </a>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="detail-header">
+        <h1 class="detail-title">{{ event.title }}</h1>
+        <div class="detail-meta">
+            <span><i class="far fa-calendar"></i> {{ event.date|date:"l, F j, Y" }}</span>
+            <span><i class="far fa-clock"></i> {{ event.start_time|time:"g:i A" }} - {{ event.end_time|time:"g:i A" }}</span>
+            <span><i class="fas fa-map-marker-alt"></i> {{ event.location }}</span>
+        </div>
+    </div>
+
+    {% if event.poster %}
+    <div class="poster-container">
+        <img src="{{ event.poster.url }}" alt="Poster for {{ event.title }}">
+    </div>
+    {% endif %}
+
+    <div class="detail-description">
+        {{ event.description|linebreaks }}
+    </div>
+
+    <div style="margin-top: 3rem; padding-top: 2.5rem; border-top: 2px solid #f0f4fa;">
+        <h3 style="font-size: 1.6rem; color: #0f2a3f; font-weight: 700; margin-bottom: 0.5rem;">Event Registration</h3>
+        
+        {% if is_registered %}
+            <div style="background: #eaf6f1; border-left: 5px solid #2aa876; padding: 1.5rem; border-radius: 12px;">
+                <h4 style="color: #1e7e56;"><i class="fas fa-check-circle"></i> Already Registered</h4>
+                <p>You are on the list! Check your email for confirmation details.</p>
+            </div>
+        {% else %}
+            {% if event.registrations.filter.status_confirmed.count >= event.capacity %}
+                <div style="background: #fff4e5; border-left: 5px solid #ffab40; padding: 1.2rem; border-radius: 12px; margin-bottom: 1.5rem;">
+                    <p style="color: #bf6a00; font-weight: 600; margin: 0;">
+                        <i class="fas fa-hourglass-half"></i> Notice: This event is currently full. 
+                        New registrations will be added to the <strong>Waitlist</strong>.
+                    </p>
+                </div>
+            {% endif %}
+
+            <form action="{% url 'events:register' event.slug %}" method="POST" style="background: #f8fafc; padding: 2rem; border-radius: 20px; border: 1px solid #e2e8f0;">
+                {% csrf_token %}
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
+                    <div><label>Full Name *</label>{{ form.full_name }}</div>
+                    <div><label>Email *</label>{{ form.email }}</div>
+                    <div><label>Phone *</label>{{ form.phone_number }}</div>
+                    <div><label>User Type</label>{{ form.user_type }}</div>
+                    <div><label>ID / EC Number</label>{{ form.id_number }}</div>
+                    <div><label>Department</label>{{ form.department }}</div>
+                </div>
+                <div style="margin-top: 1.5rem;">
+                    <label>Special Requirements</label>
+                    {{ form.special_requirements }}
+                </div>
+                <button type="submit" class="register-btn" style="width: 100%; margin-top: 2rem;">
+                    {% if event.registrations.filter.status_confirmed.count >= event.capacity %}
+                        Join Waitlist
+                    {% else %}
+                        Confirm Registration
+                    {% endif %}
+                </button>
+            </form>
+        {% endif %}
+    </div>
+
+    {% if user.is_staff %}
+    <div class="admin-card">
+        <h3 style="color: #e65100; margin-bottom: 1rem;"><i class="fas fa-user-shield"></i> Library Staff Tools</h3>
+        <div style="display: flex; flex-wrap: wrap; gap: 15px; align-items: center;">
+            <a href="{% url 'events:export_excel' event.slug %}" style="background: #2e7d32; color: white; padding: 0.8rem 1.5rem; border-radius: 12px; text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 8px;">
+                <i class="fas fa-file-excel"></i> Export Attendee List (Excel)
+            </a>
+            <div style="color: #5c6f87; font-size: 0.95rem;">
+                <strong>Confirmed:</strong> {{ event.registrations.filter.status_confirmed.count }} / {{ event.capacity }}<br>
+                <strong>Waitlisted:</strong> {{ event.registrations.filter.status_waitlisted.count }}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+</div>
+{% endblock %}
