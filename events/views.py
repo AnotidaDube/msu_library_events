@@ -19,7 +19,7 @@ import os
 from django.conf import settings
 import openpyxl
 from django.http import HttpResponse
-from django.contrib.staticfiles import finder
+from django.contrib.staticfiles import finders
 
 def fetch_resources(uri, rel):
     """
