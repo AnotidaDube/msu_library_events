@@ -76,7 +76,7 @@ class MSUEventSystemTest(TestCase):
         # Simulate typing a custom heading in the text box
         response = self.client.get(url, {'heading': 'Custom Test Title'})
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response['Content-Type'], 'application/pdf')
+        self.assertEqual(response['Content-Type'], 'application/pdf', msg=response.content)
 
     # --- FORM & REGISTRATION TESTS ---
     def test_successful_registration(self):
