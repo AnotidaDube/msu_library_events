@@ -19,6 +19,21 @@ import os
 from django.conf import settings
 import openpyxl
 from django.http import HttpResponse
+from django.contrib.staticfiles import finder
+
+def fetch_resources(uri, rel):
+    """
+    Convert HTML URIs to absolute system paths so xhtml2pdf can access those
+    resources without making an HTTP request.
+    """
+    # Use finders to locate the static file
+    result = finders.find(uri.replace(settings.STATIC_URL, ''))
+    if result:
+        if not isinstance(result, (list, tuple)):
+            result = [result]
+        result = list(result)[0]
+        return result
+    return uri
 
 def event_list(request):
     # Get today's date so we only show upcoming events
@@ -197,7 +212,7 @@ def generate_event_poster(request, slug):
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = f'attachment; filename="{filename}"'
     
-    pisa_status = pisa.CreatePDF(html_string, dest=response)
+    pisa_status = pisa.CreatePDF(html_string, dest=response, link_callback=fetch_resources)
     
     if pisa_status.err:
         return HttpResponse('We had some errors <pre>' + html_string + '</pre>')
@@ -225,7 +240,7 @@ def generate_itinerary_pdf(request, slug):
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = f'attachment; filename="{filename}"'
     
-    pisa_status = pisa.CreatePDF(html_string, dest=response)
+    pisa_status = pisa.CreatePDF(html_string, dest=response, link_callback=fetch_resources)
     if pisa_status.err:
         return HttpResponse('We had some errors <pre>' + html_string + '</pre>')
     return response
@@ -291,7 +306,7 @@ def generate_monthly_series_poster(request):
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = f'attachment; filename="{filename}"'
     
-    pisa_status = pisa.CreatePDF(html_string, dest=response)
+    pisa_status = pisa.CreatePDF(html_string, dest=response, link_callback=fetch_resources)
     if pisa_status.err:
         return HttpResponse('We had some errors <pre>' + html_string + '</pre>')
     return response
