@@ -5,8 +5,11 @@ from .models import Event, AudienceCategory, AgendaItem, Registration
 from django.contrib.auth import get_user_model
 User = get_user_model() # This automatically finds your 'CustomUser'
 from .forms import RegistrationForm
-
+from django.utils import timezone
+import datetime
+from .models import Event # Ensure this matches your models import
 class MSUEventSystemTest(TestCase):
+
     
     def setUp(self):
         """Set up a complete environment for every test"""
@@ -72,9 +75,26 @@ class MSUEventSystemTest(TestCase):
 
     def test_series_poster_pdf_generation(self):
         """Test if the custom heading series poster returns a PDF"""
+
+        
+        # 1. Create a fake event 5 days in the future
+        future_date = timezone.now().date() + datetime.timedelta(days=5)
+        
+        # Using dummy data based on your poster's layout requirements
+        Event.objects.create(
+            title="Python CI/CD Workshop",
+            date=future_date,
+            time=datetime.time(14, 0),      # 2:00 PM
+            speaker="Anotida Dube",         
+            location="MSU Main Library",
+            description="Testing the PDF generator"
+        )
+
+        # 2. Simulate typing a custom heading in the text box
         url = reverse('events:series_poster')
-        # Simulate typing a custom heading in the text box
         response = self.client.get(url, {'heading': 'Custom Test Title'})
+        
+        # 3. Check the results
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response['Content-Type'], 'application/pdf', msg=response.content)
 
