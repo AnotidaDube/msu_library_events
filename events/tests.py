@@ -81,15 +81,16 @@ class MSUEventSystemTest(TestCase):
         future_date = timezone.now().date() + datetime.timedelta(days=5)
         
         # Using dummy data based on your poster's layout requirements
+       # 1. Create a fake event 5 days in the future
+        future_date = timezone.now().date() + datetime.timedelta(days=5)
+        
+        # Only use fields that actually exist in your Event model!
         Event.objects.create(
             title="Python CI/CD Workshop",
             date=future_date,
-            time=datetime.time(14, 0),      # 2:00 PM
-            speaker="Anotida Dube",         
             location="MSU Main Library",
             description="Testing the PDF generator"
         )
-
         # 2. Simulate typing a custom heading in the text box
         url = reverse('events:series_poster')
         response = self.client.get(url, {'heading': 'Custom Test Title'})
