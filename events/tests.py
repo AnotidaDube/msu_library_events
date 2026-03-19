@@ -75,29 +75,39 @@ class MSUEventSystemTest(TestCase):
 
     def test_series_poster_pdf_generation(self):
         """Test if the custom heading series poster returns a PDF"""
-
+        from django.utils import timezone
+        from django.urls import reverse
+        from django.contrib.auth import get_user_model
+        import datetime
+        from .models import Event 
         
-        # 1. Create a fake event 5 days in the future
+        # 1. Create a fake user because 'created_by' is required
+        User = get_user_model()
+        dummy_user = User.objects.create_user(username='testadmin', password='testpassword123')
+        
+        # 2. Create a fake event 5 days in the future
         future_date = timezone.now().date() + datetime.timedelta(days=5)
         
-        # Using dummy data based on your poster's layout requirements
-       # 1. Create a fake event 5 days in the future
-        future_date = timezone.now().date() + datetime.timedelta(days=5)
-        
-        # Only use fields that actually exist in your Event model!
+        # 3. Provide EVERY required field from the Event model
         Event.objects.create(
             title="Python CI/CD Workshop",
+            description="A workshop on GitHub Actions.",
             date=future_date,
+            start_time=datetime.time(14, 0),   # 2:00 PM
+            end_time=datetime.time(16, 0),     # 4:00 PM
             location="MSU Main Library",
-            description="Testing the PDF generator"
+            capacity=100,                      # Required integer
+            created_by=dummy_user              # Required ForeignKey
         )
-        # 2. Simulate typing a custom heading in the text box
+
+        # 4. Simulate requesting the poster
         url = reverse('events:series_poster')
         response = self.client.get(url, {'heading': 'Custom Test Title'})
         
-        # 3. Check the results
+        # 5. Check the results
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response['Content-Type'], 'application/pdf', msg=response.content)
+        
 
     # --- FORM & REGISTRATION TESTS ---
     def test_successful_registration(self):
