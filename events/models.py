@@ -28,11 +28,19 @@ class Event(models.Model):
     location = models.CharField(max_length=200, help_text="Venue name or online meeting link")
     
     poster = models.ImageField(upload_to='event_posters/', blank=True, null=True)
-    capacity = models.PositiveIntegerField(help_text="Maximum number of attendees allowed")
-    
+    capacity = models.PositiveIntegerField(
+        null=True, 
+        blank=True, 
+        help_text="Maximum attendees allowed. Leave blank for unlimited."
+    )
     category = models.ForeignKey(AudienceCategory, on_delete=models.SET_NULL, null=True, related_name='events')
     created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='created_events')
     created_at = models.DateTimeField(auto_now_add=True)
+    requires_registration = models.BooleanField(
+        default=True,
+        help_text="Uncheck this if the event is open to everyone (no RSVP needed)."
+    )
+    
 
     class Meta:
         ordering = ['date', 'start_time']
@@ -51,7 +59,10 @@ class Event(models.Model):
 
     @property
     def is_full(self):
-        # Check if current registrations meet or exceed the capacity limit
+        # If capacity is None, the event is unlimited, so it can never be full
+        if self.capacity is None:
+            return False
+        # Otherwise, check if current registrations meet or exceed the limit
         return self.registrations.count() >= self.capacity
 
     def get_absolute_url(self):
