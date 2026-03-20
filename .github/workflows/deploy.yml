@@ -1,0 +1,24 @@
+name: Deploy to Live Server
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Deploy via SSH
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.SERVER_IP }}
+        username: systems
+        key: ${{ secrets.SERVER_SSH_KEY }}
+        script: |
+          cd /home/systems/msu_library_events
+          source lbvenv/bin/activate
+          git pull origin main
+          python manage.py migrate
+          sudo systemctl restart gunicorn
