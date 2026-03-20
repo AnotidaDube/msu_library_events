@@ -38,22 +38,21 @@ class AgendaItemInline(admin.TabularInline):
 
 @admin.register(Event)
 class EventAdmin(admin.ModelAdmin):
-    list_display = ('title', 'date', 'start_time', 'location', 'category', 'capacity')
-    list_filter = ('category', 'date')
+    list_display = ('title', 'date', 'start_time', 'location', 'category', 'requires_registration', 'capacity')
+    list_filter = ('requires_registration', 'category', 'date')
     search_fields = ('title', 'location', 'description')
     prepopulated_fields = {'slug': ('title',)}
-    # We can also add a read-only field to show the shareable link for the event in the admin detail view
     readonly_fields = ('shareable_link',)
     inlines = [AgendaItemInline]
     actions = [generate_multi_poster]
 
     def shareable_link(self, obj):
-        if obj.id: # Check if the event has been saved to the database yet
+        if obj.id:
             url = obj.get_absolute_url()
             return format_html('<a href="{}" target="_blank" style="background: #0d47a1; color: white; padding: 5px 10px; border-radius: 4px; text-decoration: none;">View Event & Copy Link</a>', url)
         return "Save the event first to generate a link."
     shareable_link.short_description = "Shareable Event Link"
-    # Optional: Automatically set the 'created_by' field to the logged-in admin user
+
     def save_model(self, request, obj, form, change):
         if not getattr(obj, 'created_by_id', None):
             obj.created_by = request.user
