@@ -4,7 +4,45 @@
 
 {% block extra_css %}
 <style>
-    /* filter toolbar */
+    /* 🚀 NEW: Hero Slider Styles added to your original CSS */
+    .hero-slider {
+        position: relative;
+        width: 100%;
+        height: 320px;
+        border-radius: 28px;
+        overflow: hidden;
+        margin-bottom: 2rem;
+        box-shadow: 0 12px 24px -8px rgba(0, 30, 50, 0.12);
+        border: 1px solid rgba(255,255,255,0.6);
+    }
+    .slide {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        transition: opacity 0.8s ease-in-out;
+        background-size: cover;
+        background-position: center;
+        display: flex;
+        align-items: flex-end;
+    }
+    .slide.active { opacity: 1; z-index: 1; }
+    .slide-content {
+        background: linear-gradient(to top, rgba(13, 71, 161, 0.95) 0%, rgba(13, 71, 161, 0.6) 50%, transparent 100%);
+        width: 100%;
+        padding: 60px 30px 25px 30px;
+        color: white;
+    }
+    .slide-title { font-size: 2.2rem; font-weight: 700; margin-bottom: 8px; text-shadow: 1px 1px 3px rgba(0,0,0,0.3); }
+    .slide-subtitle { font-size: 1.1rem; opacity: 0.9; }
+    .slider-nav { position: absolute; bottom: 25px; right: 30px; display: flex; gap: 12px; z-index: 2; }
+    .nav-dot { width: 10px; height: 10px; background: rgba(255,255,255,0.4); border-radius: 50%; cursor: pointer; transition: all 0.3s ease; }
+    .nav-dot:hover { background: rgba(255,255,255,0.8); }
+    .nav-dot.active { background: white; transform: scale(1.3); }
+
+    /* Your original CSS starts here */
     .filter-bar {
         display: flex;
         flex-wrap: wrap;
@@ -40,7 +78,6 @@
     .filter-btn i { margin-right: 6px; font-size: 0.9rem; }
     .filter-btn:hover { background: #eaf0f8; border-color: #9bb5d4; }
 
-    /* Active button UPDATED TO MSU BLUE */
     .filter-btn.active {
         background: #0d47a1;
         color: white;
@@ -60,7 +97,6 @@
 
     .event-counter i { margin-right: 6px; color: #ff8c42; }
 
-    /* events grid (cards) */
     .events-container { display: flex; flex-direction: column; gap: 1.5rem; }
 
     .event-card {
@@ -81,7 +117,6 @@
         box-shadow: 0 22px 32px -10px rgba(20, 50, 80, 0.2);
     }
 
-    /* left date bubble UPDATED TO MSU BLUE */
     .event-date {
         background: #0d47a1;
         color: white;
@@ -110,7 +145,6 @@
 
     .category-badge { font-size: 0.85rem; font-weight: 600; padding: 0.4rem 1.2rem; border-radius: 40px; color: white; text-transform: capitalize; letter-spacing: 0.3px; box-shadow: inset 0 -1px 3px rgba(0,0,0,0.1); }
     
-    /* category colors */
     .cat-undergraduates { background: #f3aa5a; }
     .cat-postgraduates { background: #2aa876; }
     .cat-academic { background: #c0576b; }
@@ -147,23 +181,44 @@
 
 {% block content %}
 
+<div class="hero-slider">
+    <div class="slide active" style="background-image: url('https://images.unsplash.com/photo-1541339907198-e08756dedf3f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80');">
+        <div class="slide-content">
+            <div class="slide-title">Welcome to MSU Library Events</div>
+            <div class="slide-subtitle">Empowering your academic journey with world-class resources.</div>
+        </div>
+    </div>
+    <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80');">
+        <div class="slide-content">
+            <div class="slide-title">Research & Innovation</div>
+            <div class="slide-subtitle">Discover workshops designed to elevate your academic skills.</div>
+        </div>
+    </div>
+    <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1568667256549-094345857637?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80');">
+        <div class="slide-content">
+            <div class="slide-title">Collaborative Learning</div>
+            <div class="slide-subtitle">Join study groups and academic gatherings in our modern spaces.</div>
+        </div>
+    </div>
+    <div class="slider-nav">
+        <div class="nav-dot active" onclick="setSlide(0)"></div>
+        <div class="nav-dot" onclick="setSlide(1)"></div>
+        <div class="nav-dot" onclick="setSlide(2)"></div>
+    </div>
+</div>
+
 <div style="border-bottom: 2px solid #f0f4fa; padding-bottom: 1.5rem; margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
-    
     <div>
         <h1 style="font-size: 2.2rem; color: #0f2a3f; font-weight: 700; margin-bottom: 0.5rem;">Library Events & Workshops</h1>
         <p style="color: #5c6f87; font-size: 1.1rem;">Discover storytimes, workshops & community gatherings.</p>
     </div>
     
     <form action="{% url 'events:series_poster' %}" method="GET" target="_blank" style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center; background: white; padding: 0.4rem; border-radius: 50px; border: 1px solid #cdd9e6; box-shadow: 0 4px 10px rgba(0,20,30,0.03);">
-        
         <input type="text" name="heading" placeholder="Custom Poster Heading..." style="padding: 0.6rem 1.2rem; border-radius: 40px; border: none; font-size: 0.95rem; min-width: 240px; outline: none; background: #f4f7fb; color: #0f2a3f;">
-        
         <button type="submit" style="background: #0d47a1; color: white; padding: 0.6rem 1.2rem; border-radius: 40px; border: none; font-weight: 600; cursor: pointer; transition: background 0.2s; display: inline-flex; align-items: center; gap: 8px;">
             <i class="fas fa-file-pdf"></i> Generate
         </button>
-        
     </form>
-    
 </div>
 
 <div class="filter-bar">
@@ -189,6 +244,22 @@
                     <span class="event-meta-item"><i class="far fa-clock"></i> {{ ev.start_time|time:"g:i A" }} - {{ ev.end_time|time:"g:i A" }}</span>
                     <span class="event-meta-item"><i class="fas fa-map-marker-alt"></i> {{ ev.location }}</span>
                 </div>
+
+                <div style="display: flex; gap: 8px; margin: 0.8rem 0; flex-wrap: wrap;">
+                    {% if ev.requires_registration %}
+                        <span style="background-color: #f8f9fa; color: #0d47a1; border: 1px solid #0d47a1; padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Registration Required</span>
+                        {% if ev.capacity %}
+                            {% if ev.is_full %}
+                                <span style="background-color: #fff1f0; color: #cf1322; border: 1px solid #ffa39e; padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Capacity Reached</span>
+                            {% else %}
+                                <span style="background-color: #f6ffed; color: #389e0d; border: 1px solid #b7eb8f; padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Limited Seating</span>
+                            {% endif %}
+                        {% endif %}
+                    {% else %}
+                        <span style="background-color: #f8f9fa; color: #495057; border: 1px solid #ced4da; padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Open to All</span>
+                    {% endif %}
+                </div>
+
                 <p class="event-description">{{ ev.description|truncatewords:40 }}</p>
                 <div class="event-footer">
                     <span class="category-badge cat-{{ ev.category.slug|default:'default' }}">{{ ev.category.name|default:"General" }}</span>
@@ -207,13 +278,40 @@
 
 {% block extra_js %}
 <script>
+    // 🚀 NEW: Slider JavaScript
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+    const dots = document.querySelectorAll('.nav-dot');
+    let slideInterval;
+
+    function showSlide(index) {
+        slides.forEach(s => s.classList.remove('active'));
+        dots.forEach(d => d.classList.remove('active'));
+        slides[index].classList.add('active');
+        dots[index].classList.add('active');
+        currentSlide = index;
+    }
+
+    function setSlide(index) {
+        showSlide(index);
+        clearInterval(slideInterval);
+        startSlideshow();
+    }
+
+    function startSlideshow() {
+        slideInterval = setInterval(() => {
+            let nextSlide = (currentSlide + 1) % slides.length;
+            showSlide(nextSlide);
+        }, 5000);
+    }
+    startSlideshow();
+
+    // Your original filter JavaScript
     function filterEvents(categorySlug) {
-        // Update active button styling
         const buttons = document.querySelectorAll('.filter-btn');
         buttons.forEach(btn => btn.classList.remove('active'));
         event.currentTarget.classList.add('active');
 
-        // Filter the cards
         const cards = document.querySelectorAll('.event-card');
         let visibleCount = 0;
 
@@ -226,7 +324,6 @@
             }
         });
 
-        // Update counter
         document.getElementById('count-num').innerText = visibleCount;
     }
 </script>
