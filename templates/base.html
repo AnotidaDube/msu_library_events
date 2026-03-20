@@ -1,133 +1,237 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Midlands State University Library · events calendar{% endblock %}</title>
+    <title>{% block title %}Midlands State University Library · Events{% endblock %}</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
+        /* 🎨 Institutional Color Variables */
+        :root {
+            --primary-blue: #1976d2; /* Modern Academic Blue */
+            --sky-blue: #4fc3f7;     /* Sky accent for titles */
+            --dark-blue: #0d47a1;    /* Deep MSU blue for gradient base */
+            --bg-color: #f4f7fb;
+            --text-main: #2c3e50;
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
         }
 
         body {
-            background: #f2f4f8;
+            background: var(--bg-color);
+            color: var(--text-main);
             display: flex;
             flex-direction: column;
             min-height: 100vh;
         }
 
-        /* header / navigation - MSU BLUE */
-        .library-header {
-            background: #0d47a1;  
+        /* 🎓 Institutional Header */
+        .university-header {
+            /* Professional sky-to-royal gradient */
+            background: linear-gradient(135deg, var(--dark-blue) 0%, var(--primary-blue) 100%);
             color: white;
-            padding: 2rem 1rem;
-            text-align: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            padding: 1rem 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
 
-        .library-header h1 {
-            font-weight: 500;
-            font-size: 2.2rem;
-            letter-spacing: -0.5px;
-        }
-
-        .library-header h1 i {
-            color: #ffb347;  /* warm accent */
-            margin-right: 10px;
-        }
-
-        .library-header p {
-            font-size: 1.1rem;
-            opacity: 0.85;
-            margin-top: 8px;
-        }
-
-        /* Top Navigation Buttons */
-        .top-nav {
-            margin-top: 1.5rem;
+        .header-content {
+            max-width: 1200px;
+            width: 90%;
+            margin: 0 auto;
             display: flex;
-            justify-content: center;
-            gap: 15px;
-            flex-wrap: wrap;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .uni-logo {
+            height: 75px; /* Adjust as needed for your logo's proportions */
+            width: auto;
+            background: white; /* Important for JPG logos to have a clean background */
+            padding: 5px;
+            border-radius: 50%;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            object-fit: contain;
+        }
+
+        .uni-titles {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .uni-titles h1 {
+            font-weight: 700;
+            font-size: 1.8rem;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .uni-titles h2 {
+            font-weight: 400;
+            font-size: 1.1rem;
+            color: var(--sky-blue);
+            letter-spacing: 0.5px;
+        }
+
+        /* 🧭 Sticky Navigation Bar */
+        .main-nav-container {
+            background: white;
+            border-bottom: 1px solid #e0e6ed;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .main-nav {
+            max-width: 1200px;
+            width: 90%;
+            margin: 0 auto;
+            display: flex;
+            gap: 5px;
+            padding: 0.5rem 0;
         }
 
         .nav-btn {
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
+            color: var(--text-main);
             text-decoration: none;
-            padding: 0.6rem 1.5rem;
-            border-radius: 30px;
-            font-weight: 500;
+            padding: 0.7rem 1.2rem;
+            border-radius: 8px;
+            font-weight: 600;
             font-size: 0.95rem;
-            border: 1px solid rgba(255, 255, 255, 0.3);
             transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .nav-btn:hover {
-            background: white;
-            color: #0d47a1;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        }
-        
-        .nav-btn i {
-            margin-right: 6px;
+            background: #eaf2fa;
+            color: var(--primary-blue);
         }
 
-        /* main container */
+        /* Standardized right-aligned admin tools */
+        .nav-btn.admin-btn {
+            margin-left: auto; 
+            background: #fff8f0;
+            color: #d35400;
+            border: 1px solid #ffe0b2;
+        }
+
+        .nav-btn.admin-btn:hover {
+            background: #ffe0b2;
+        }
+
+        /* Alert/Message styling */
+        .alert-container {
+            max-width: 1200px;
+            width: 90%;
+            margin: 1.5rem auto 0;
+        }
+
+        .alert-box {
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        /* Main Content Container */
         .container {
             max-width: 1200px;
             width: 90%;
-            margin: 2.5rem auto;
+            margin: 2rem auto;
             flex: 1;
         }
 
-        /* footer - MSU BLUE */
-        .library-footer {
-            background: #0d47a1;
-            color: #d5e2f0;
-            text-align: center;
-            padding: 1.8rem;
-            margin-top: 2rem;
-            font-size: 1rem;
+        /* 📜 Formal University Footer */
+        .university-footer {
+            background: #1a252f; /* Dark charcoal for contrast */
+            color: #a0b2c6;
+            padding: 2.5rem 0;
+            margin-top: auto;
+            border-top: 4px solid var(--primary-blue);
         }
 
-        .library-footer i {
-            color: #ffb85c;
-            margin: 0 4px;
+        .footer-content {
+            max-width: 1200px;
+            width: 90%;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .footer-info p {
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+
+        .footer-info i {
+            color: var(--sky-blue);
+            width: 20px;
+            text-align: center;
+        }
+
+        .footer-tagline {
+            font-weight: 600;
+            color: white;
+            font-size: 1.1rem;
+        }
+
+        /* Mobile responsiveness */
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; gap: 10px;}
+            .uni-logo { height: 60px; }
+            .uni-titles h1 { font-size: 1.5rem; }
+            .main-nav { overflow-x: auto; white-space: nowrap; padding-bottom: 0.5rem; }
+            .nav-btn.admin-btn { margin-left: 0; }
+            .footer-content { flex-direction: column; text-align: center; }
         }
     </style>
     
     {% block extra_css %}{% endblock %}
 </head>
 <body>
-    <header class="library-header">
-        <h1><i class="fas fa-book-open"></i> Midlands State University Library</h1>
-        <p><i class="fas fa-calendar-check"></i> discover storytimes, workshops & community gatherings</p>
-        
-        <div class="top-nav">
-            <a href="{% url 'events:list' %}" class="nav-btn"><i class="fas fa-list"></i> Event List</a>
-            <a href="{% url 'events:calendar' %}" class="nav-btn"><i class="far fa-calendar-alt"></i> Full Calendar</a>
-            
-            {% if user.is_staff %}
-                <a href="{% url 'analytics:dashboard' %}" class="nav-btn"><i class="fas fa-chart-line"></i> Analytics</a>
-                <a href="/admin/" class="nav-btn" target="_blank"><i class="fas fa-cogs"></i> Admin Dashboard</a>
-            {% endif %}
+    
+    <header class="university-header">
+        <div class="header-content">
+            <img src="{% static 'images/msu_logo.jpg' %}" alt="Midlands State University Logo" class="uni-logo">
+            <div class="uni-titles">
+                <h1>Midlands State University</h1>
+                <h2>Library Events & Training Portal</h2>
+            </div>
         </div>
     </header>
 
+    <div class="main-nav-container">
+        <nav class="main-nav">
+            <a href="{% url 'events:list' %}" class="nav-btn"><i class="fas fa-layer-group"></i> Browse Events</a>
+            <a href="{% url 'events:calendar' %}" class="nav-btn"><i class="far fa-calendar-alt"></i> Calendar View</a>
+            
+            {% if user.is_staff %}
+                <a href="{% url 'analytics:dashboard' %}" class="nav-btn admin-btn"><i class="fas fa-chart-pie"></i> Analytics</a>
+                <a href="/admin/" class="nav-btn admin-btn" target="_blank"><i class="fas fa-cogs"></i> Staff Admin</a>
+            {% endif %}
+        </nav>
+    </div>
+
     {% if messages %}
-    <div style="max-width: 1200px; width: 90%; margin: 1rem auto; text-align: center;">
+    <div class="alert-container">
         {% for message in messages %}
-            <div style="padding: 1rem; border-radius: 8px; margin-bottom: 0.5rem; font-weight: 500;
-                {% if message.tags == 'success' %}background: #d4edda; color: #155724; border: 1px solid #c3e6cb;
-                {% elif message.tags == 'error' %}background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb;
-                {% elif message.tags == 'warning' %}background: #fff3cd; color: #856404; border: 1px solid #ffeeba;
-                {% else %}background: #e2e3e5; color: #383d41; border: 1px solid #d6d8db;{% endif %}">
-                <i class="fas fa-bell"></i> {{ message }}
+            <div class="alert-box alert-{{ message.tags }}">
+                <i class="fas fa-info-circle"></i> {{ message }}
             </div>
         {% endfor %}
     </div>
@@ -137,9 +241,18 @@
         {% block content %}{% endblock %}
     </main>
 
-    <footer class="library-footer">
-        <p><i class="fas fa-map-pin"></i>  Copyright © 2026 Midlands State University Library. All rights reserved.  |  <i class="fas fa-phone-alt"></i>  +263 54 260 417 – 9 Ext 2466 </p>
-        <p style="margin-top: 10px; font-size: 0.9rem;">✶ All events free and open to the public ✶</p>
+    <footer class="university-footer">
+        <div class="footer-content">
+            <div class="footer-info">
+                <p class="footer-tagline">Empowering your academic journey.</p>
+                <p><i class="fas fa-map-marker-alt"></i> Senga Road, Gweru, Zimbabwe</p>
+                <p><i class="fas fa-phone"></i> +263 54 260 417 – 9 Ext 2466</p>
+            </div>
+            <div class="footer-info" style="text-align: right;">
+                <p>Copyright © {% now "Y" %} Midlands State University.</p>
+                <p>All library events are free and open to students & staff.</p>
+            </div>
+        </div>
     </footer>
 
     {% block extra_js %}{% endblock %}
