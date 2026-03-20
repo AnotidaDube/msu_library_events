@@ -17,6 +17,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+admin.site.site_header = 'MSU Library Events Admin'
+admin.site.site_title = 'Library Events Portal'
+admin.site.index_title = 'Welcome to the Events Management Portal'
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     # Include the URLs from the events app, which will handle all event-related pages
