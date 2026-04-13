@@ -4,17 +4,28 @@
 
 {% block extra_css %}
 <style>
-    /* 🚀 NEW: Hero Slider Styles added to your original CSS */
+    /* 🚀 PREMIUM UPGRADES: Animations and refined shadows */
+    @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes imageZoom {
+        from { transform: scale(1); }
+        to { transform: scale(1.08); }
+    }
+
     .hero-slider {
         position: relative;
         width: 100%;
-        height: 320px;
-        border-radius: 28px;
+        height: 340px; /* Slightly taller for more impact */
+        border-radius: 32px;
         overflow: hidden;
-        margin-bottom: 2rem;
-        box-shadow: 0 12px 24px -8px rgba(0, 30, 50, 0.12);
-        border: 1px solid rgba(255,255,255,0.6);
+        margin-bottom: 2.5rem;
+        box-shadow: 0 20px 40px -10px rgba(13, 71, 161, 0.15); /* Richer, colored shadow */
+        border: 1px solid rgba(255, 255, 255, 0.8);
     }
+    
     .slide {
         position: absolute;
         top: 0;
@@ -22,173 +33,220 @@
         width: 100%;
         height: 100%;
         opacity: 0;
-        transition: opacity 0.8s ease-in-out;
+        transition: opacity 1s ease-in-out;
+        overflow: hidden;
+    }
+    
+    .slide.active { opacity: 1; z-index: 1; }
+    
+    /* Subtle slow-zoom effect on the active background image */
+    .slide.active .slide-bg {
+        animation: imageZoom 8s linear forwards; 
+    }
+
+    .slide-bg {
+        width: 100%;
+        height: 100%;
         background-size: cover;
         background-position: center;
-        display: flex;
-        align-items: flex-end;
     }
-    .slide.active { opacity: 1; z-index: 1; }
-    .slide-content {
-        background: linear-gradient(to top, rgba(13, 71, 161, 0.95) 0%, rgba(13, 71, 161, 0.6) 50%, transparent 100%);
-        width: 100%;
-        padding: 60px 30px 25px 30px;
-        color: white;
-    }
-    .slide-title { font-size: 2.2rem; font-weight: 700; margin-bottom: 8px; text-shadow: 1px 1px 3px rgba(0,0,0,0.3); }
-    .slide-subtitle { font-size: 1.1rem; opacity: 0.9; }
-    .slider-nav { position: absolute; bottom: 25px; right: 30px; display: flex; gap: 12px; z-index: 2; }
-    .nav-dot { width: 10px; height: 10px; background: rgba(255,255,255,0.4); border-radius: 50%; cursor: pointer; transition: all 0.3s ease; }
-    .nav-dot:hover { background: rgba(255,255,255,0.8); }
-    .nav-dot.active { background: white; transform: scale(1.3); }
 
-    /* Your original CSS starts here */
+    .slide-content {
+        position: absolute;
+        bottom: 0;
+        background: linear-gradient(to top, rgba(13, 71, 161, 0.95) 0%, rgba(13, 71, 161, 0.4) 60%, transparent 100%);
+        width: 100%;
+        padding: 80px 40px 35px 40px;
+        color: white;
+        backdrop-filter: blur(2px); /* Slight glass effect on text background */
+    }
+    
+    .slide-title { 
+        font-size: 2.6rem; 
+        font-weight: 800; 
+        margin-bottom: 8px; 
+        letter-spacing: -0.5px;
+        text-shadow: 0 4px 12px rgba(0,0,0,0.4); 
+    }
+    
+    .slide-subtitle { font-size: 1.15rem; font-weight: 400; opacity: 0.95; }
+    
+    .slider-nav { position: absolute; bottom: 35px; right: 40px; display: flex; gap: 12px; z-index: 2; }
+    .nav-dot { width: 12px; height: 12px; background: rgba(255,255,255,0.3); border-radius: 50%; cursor: pointer; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+    .nav-dot:hover { background: rgba(255,255,255,0.9); }
+    .nav-dot.active { background: white; transform: scale(1.4); box-shadow: 0 0 10px rgba(255,255,255,0.5); }
+
+    /* Frosted Glass Filter Bar */
     .filter-bar {
         display: flex;
         flex-wrap: wrap;
         align-items: center;
         gap: 12px;
-        margin-bottom: 2.5rem;
-        background: white;
-        padding: 1rem 1.8rem;
+        margin-bottom: 3rem;
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        padding: 1.2rem 2rem;
         border-radius: 60px;
-        box-shadow: 0 6px 14px rgba(0, 20, 30, 0.08);
+        box-shadow: 0 8px 24px rgba(0, 20, 30, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.8);
     }
 
-    .filter-label {
-        font-weight: 600;
-        color: #0d47a1;
-        margin-right: 8px;
-        font-size: 1rem;
-    }
-
+    .filter-label { font-weight: 700; color: #0d47a1; margin-right: 8px; font-size: 1.05rem; text-transform: uppercase; letter-spacing: 1px;}
+    
     .filter-btn {
         background: #ffffff;
-        border: 1px solid #cdd9e6;
-        color: #0d47a1;
+        border: 1px solid #e0e8f2;
+        color: #5c6f87;
         font-size: 0.95rem;
-        font-weight: 500;
-        padding: 0.5rem 1.3rem;
+        font-weight: 600;
+        padding: 0.6rem 1.4rem;
         border-radius: 40px;
         cursor: pointer;
-        transition: all 0.2s ease;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.02);
     }
-
-    .filter-btn i { margin-right: 6px; font-size: 0.9rem; }
-    .filter-btn:hover { background: #eaf0f8; border-color: #9bb5d4; }
+    
+    .filter-btn i { margin-right: 6px; font-size: 0.9rem; transition: transform 0.3s ease; }
+    .filter-btn:hover { background: #f4f7fb; color: #0d47a1; border-color: #cdd9e6; transform: translateY(-2px); }
+    .filter-btn:hover i { transform: scale(1.1); }
 
     .filter-btn.active {
-        background: #0d47a1;
+        background: linear-gradient(135deg, #0d47a1 0%, #1565c0 100%);
         color: white;
-        border-color: #0d47a1;
-        box-shadow: 0 6px 10px rgba(13, 71, 161, 0.2);
+        border-color: transparent;
+        box-shadow: 0 8px 16px rgba(13, 71, 161, 0.25);
     }
 
     .event-counter {
         margin-left: auto;
-        background: #f0f4fa;
-        padding: 0.4rem 1.2rem;
+        background: white;
+        border: 1px solid #e0e8f2;
+        padding: 0.5rem 1.4rem;
         border-radius: 30px;
         font-size: 0.95rem;
         color: #0d47a1;
-        font-weight: 500;
+        font-weight: 700;
+        box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
     }
 
-    .event-counter i { margin-right: 6px; color: #ff8c42; }
+    .events-container { display: flex; flex-direction: column; gap: 1.8rem; }
 
-    .events-container { display: flex; flex-direction: column; gap: 1.5rem; }
-
+    /* Refined Event Cards */
     .event-card {
-        background: white;
-        border-radius: 28px;
-        padding: 1.2rem 1.8rem 1.2rem 1.5rem;
+        background: #ffffff;
+        border-radius: 32px;
+        padding: 1.5rem 2rem 1.5rem 1.8rem;
         display: flex;
         align-items: flex-start;
-        gap: 1.5rem;
-        box-shadow: 0 12px 24px -8px rgba(0, 30, 50, 0.12);
-        transition: transform 0.15s, box-shadow 0.2s;
-        border: 1px solid rgba(255,255,255,0.6);
-        backdrop-filter: blur(2px);
+        gap: 2rem;
+        box-shadow: 0 10px 30px -10px rgba(0, 30, 50, 0.08);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        border: 1px solid rgba(220, 230, 240, 0.6);
+        animation: fadeInUp 0.6s ease-out forwards;
+        opacity: 0;
     }
+    
+    /* Stagger the entrance animation of the cards */
+    .event-card:nth-child(1) { animation-delay: 0.1s; }
+    .event-card:nth-child(2) { animation-delay: 0.2s; }
+    .event-card:nth-child(3) { animation-delay: 0.3s; }
+    .event-card:nth-child(4) { animation-delay: 0.4s; }
 
     .event-card:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 22px 32px -10px rgba(20, 50, 80, 0.2);
+        transform: translateY(-6px) scale(1.01);
+        box-shadow: 0 24px 40px -12px rgba(13, 71, 161, 0.12);
+        border-color: rgba(13, 71, 161, 0.15);
     }
 
+    /* Premium Gradient Date Badge */
     .event-date {
-        background: #0d47a1;
+        background: linear-gradient(135deg, #0d47a1 0%, #1976d2 100%);
         color: white;
-        min-width: 85px;
-        width: 85px;
-        padding: 0.9rem 0.2rem;
-        border-radius: 30px;
+        min-width: 95px;
+        width: 95px;
+        padding: 1.2rem 0.2rem;
+        border-radius: 24px;
         text-align: center;
-        box-shadow: 0 6px 0 #082b63;
+        box-shadow: 0 10px 20px -5px rgba(13, 71, 161, 0.4), inset 0 2px 0 rgba(255,255,255,0.2);
         flex-shrink: 0;
-        transition: background 0.1s;
+        position: relative;
+        overflow: hidden;
     }
+    
+    /* Subtle shine effect on the badge */
+    .event-date::after {
+        content: '';
+        position: absolute;
+        top: 0; left: -100%; width: 50%; height: 100%;
+        background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0) 100%);
+        transform: skewX(-25deg);
+        transition: 0.5s;
+    }
+    .event-card:hover .event-date::after { left: 200%; transition: 0.8s ease-in-out; }
 
-    .event-day { display: block; font-size: 2.6rem; font-weight: 700; line-height: 1; letter-spacing: -1px; }
-    .event-month { font-size: 1.2rem; text-transform: uppercase; font-weight: 500; letter-spacing: 1px; opacity: 0.9; }
+    .event-day { display: block; font-size: 2.8rem; font-weight: 800; line-height: 1; letter-spacing: -1.5px; }
+    .event-month { font-size: 1.1rem; text-transform: uppercase; font-weight: 600; letter-spacing: 2px; opacity: 0.9; margin-top: 4px; display: block;}
 
     .event-details { flex: 1; }
     
-    /* Updated Event Title CSS to make it clickable and stylish */
-    .event-title { font-size: 1.7rem; font-weight: 600; margin-bottom: 0.5rem; line-height: 1.2; }
-    .event-title a { color: #0f2a3f; text-decoration: none; transition: color 0.2s; }
-    .event-title a:hover { color: #0d47a1; text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 4px; }
+    .event-title { font-size: 1.8rem; font-weight: 700; margin-bottom: 0.6rem; line-height: 1.25; letter-spacing: -0.3px; }
+    .event-title a { color: #0a1f33; text-decoration: none; transition: color 0.3s ease; }
+    .event-title a:hover { color: #0d47a1; }
     
-    .event-meta { display: flex; align-items: center; gap: 1.2rem; flex-wrap: wrap; margin: 0.7rem 0 0.5rem; color: #3a546d; font-size: 1rem; }
-    .event-meta-item { display: flex; align-items: center; gap: 6px; background: #f0f6fd; padding: 0.3rem 0.9rem; border-radius: 30px; }
-    .event-meta-item i { color: #ff8c42; width: 1.2rem; font-size: 1rem; }
+    .event-meta { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; margin: 0.8rem 0 0.8rem; color: #4a637d; font-size: 0.95rem; font-weight: 500; }
+    .event-meta-item { display: flex; align-items: center; gap: 8px; background: #f4f7fb; padding: 0.4rem 1rem; border-radius: 40px; border: 1px solid #eef2f6; }
+    .event-meta-item i { color: #0d47a1; font-size: 1.1rem; opacity: 0.8; }
 
-    .event-description { color: #2c4258; font-size: 1.05rem; margin: 0.8rem 0 0.8rem; line-height: 1.5; max-width: 75ch; border-left: 3px solid #dde7f0; padding-left: 1.2rem; }
-    .event-footer { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; margin-top: 0.5rem; }
+    .event-description { color: #3a546d; font-size: 1.1rem; margin: 1rem 0; line-height: 1.6; max-width: 85ch; border-left: 4px solid #e0e8f2; padding-left: 1.4rem; font-weight: 400; }
+    
+    .event-footer { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; margin-top: 1.5rem; padding-top: 1.2rem; border-top: 1px dashed #e0e8f2; }
 
-    /* Updated Category Badge CSS to ensure text is never invisible */
     .category-badge { 
-        background: #597a9d; /* Default background so white text is always visible */
+        background: #597a9d; 
         font-size: 0.85rem; 
-        font-weight: 600; 
-        padding: 0.4rem 1.2rem; 
+        font-weight: 700; 
+        padding: 0.5rem 1.4rem; 
         border-radius: 40px; 
         color: white; 
-        text-transform: capitalize; 
-        letter-spacing: 0.3px; 
-        box-shadow: inset 0 -1px 3px rgba(0,0,0,0.1); 
+        text-transform: uppercase; 
+        letter-spacing: 1px; 
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
     }
     
-    .cat-undergraduates { background: #f3aa5a; }
-    .cat-postgraduates { background: #2aa876; }
-    .cat-academic, .cat-academics { background: #c0576b; } /* Added both singular and plural */
-    .cat-library { background: #9b6fc4; }
+    .cat-undergraduates { background: linear-gradient(135deg, #f3aa5a 0%, #e88c30 100%); }
+    .cat-postgraduates { background: linear-gradient(135deg, #2aa876 0%, #1e875d 100%); }
+    .cat-academic, .cat-academics { background: linear-gradient(135deg, #c0576b 0%, #a23f52 100%); }
+    .cat-library { background: linear-gradient(135deg, #9b6fc4 0%, #7d4ba8 100%); }
 
     .more-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
         color: #0d47a1;
-        font-weight: 500;
+        font-weight: 700;
+        font-size: 1.05rem;
         text-decoration: none;
-        border-bottom: 2px solid #ffb85c;
-        padding-bottom: 2px;
-        transition: 0.15s;
+        padding: 0.5rem 1.2rem;
+        border-radius: 40px;
+        background: #f0f4fa;
+        transition: all 0.3s ease;
     }
 
-    .more-link:hover { color: #ff8c42; border-bottom-color: #0d47a1; }
+    .more-link:hover { background: #0d47a1; color: white; transform: translateX(5px); box-shadow: 0 6px 12px rgba(13, 71, 161, 0.2); }
+    .more-link:hover i { transform: translateX(3px); transition: 0.3s; }
+    
     .hidden { display: none !important; }
 
-    @media (max-width: 650px) {
-        .event-card { flex-direction: column; align-items: stretch; padding: 1.5rem; }
-        .event-date { display: flex; width: 100%; min-width: 100%; align-items: center; justify-content: center; gap: 8px; padding: 0.5rem; border-radius: 40px; }
+    @media (max-width: 768px) {
+        .event-card { flex-direction: column; align-items: stretch; padding: 1.5rem; gap: 1.2rem; }
+        .event-date { display: flex; width: 100%; min-width: 100%; align-items: baseline; justify-content: center; gap: 12px; padding: 0.8rem; border-radius: 20px; }
         .event-day { font-size: 2.2rem; }
-        .event-month { font-size: 1.3rem; }
-        .filter-bar { border-radius: 30px; padding: 1rem 1.2rem; }
-        .event-meta { gap: 0.8rem; }
-        .event-title { font-size: 1.5rem; }
-    }
-    @media (max-width: 480px) {
-        .filter-btn { padding: 0.4rem 1rem; font-size: 0.85rem; }
-        .event-counter { margin-left: 0; width: 100%; text-align: center; }
+        .event-month { font-size: 1.2rem; margin-top: 0; }
+        .filter-bar { padding: 1rem; justify-content: center; }
+        .event-counter { width: 100%; text-align: center; margin-top: 10px; }
+        .slide-content { padding: 40px 20px 20px 20px; }
+        .slide-title { font-size: 2rem; }
     }
 </style>
 {% endblock %}
@@ -196,19 +254,22 @@
 {% block content %}
 
 <div class="hero-slider">
-    <div class="slide active" style="background-image: url('https://images.unsplash.com/photo-1541339907198-e08756dedf3f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80');">
+    <div class="slide active">
+        <div class="slide-bg" style="background-image: url('https://images.unsplash.com/photo-1541339907198-e08756dedf3f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80');"></div>
         <div class="slide-content">
             <div class="slide-title">Welcome to MSU Library Events</div>
             <div class="slide-subtitle">Empowering your academic journey with world-class resources.</div>
         </div>
     </div>
-    <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80');">
+    <div class="slide">
+        <div class="slide-bg" style="background-image: url('https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80');"></div>
         <div class="slide-content">
             <div class="slide-title">Research & Innovation</div>
             <div class="slide-subtitle">Discover workshops designed to elevate your academic skills.</div>
         </div>
     </div>
-    <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1568667256549-094345857637?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80');">
+    <div class="slide">
+        <div class="slide-bg" style="background-image: url('https://images.unsplash.com/photo-1568667256549-094345857637?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80');"></div>
         <div class="slide-content">
             <div class="slide-title">Collaborative Learning</div>
             <div class="slide-subtitle">Join study groups and academic gatherings in our modern spaces.</div>
@@ -221,27 +282,30 @@
     </div>
 </div>
 
-<div style="border-bottom: 2px solid #f0f4fa; padding-bottom: 1.5rem; margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+<div style="padding-bottom: 1.5rem; margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
     <div>
-        <h1 style="font-size: 2.2rem; color: #0f2a3f; font-weight: 700; margin-bottom: 0.5rem;">Library Events & Workshops</h1>
-        <p style="color: #5c6f87; font-size: 1.1rem;">Discover storytimes, workshops & community gatherings.</p>
+        <h1 style="font-size: 2.4rem; color: #0a1f33; font-weight: 800; margin-bottom: 0.5rem; letter-spacing: -0.5px;">Library Events & Workshops</h1>
+        <p style="color: #5c6f87; font-size: 1.15rem; font-weight: 400;">Discover storytimes, workshops & community gatherings.</p>
     </div>
     
-    <form action="{% url 'events:series_poster' %}" method="GET" target="_blank" style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center; background: white; padding: 0.4rem; border-radius: 50px; border: 1px solid #cdd9e6; box-shadow: 0 4px 10px rgba(0,20,30,0.03);">
-        <input type="text" name="heading" placeholder="Custom Poster Heading..." style="padding: 0.6rem 1.2rem; border-radius: 40px; border: none; font-size: 0.95rem; min-width: 240px; outline: none; background: #f4f7fb; color: #0f2a3f;">
-        <button type="submit" style="background: #0d47a1; color: white; padding: 0.6rem 1.2rem; border-radius: 40px; border: none; font-weight: 600; cursor: pointer; transition: background 0.2s; display: inline-flex; align-items: center; gap: 8px;">
+    {% if request.user.is_staff %}
+    <form action="{% url 'events:series_poster' %}" method="GET" target="_blank" style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center; background: white; padding: 0.5rem; border-radius: 50px; border: 2px solid #e0e8f2; box-shadow: 0 8px 20px rgba(0,20,30,0.06); animation: fadeInUp 0.5s ease-out;">
+        <div style="background: #f8f9fa; border-radius: 40px; padding: 4px 12px; margin-right: 4px; font-size: 0.8rem; font-weight: 700; color: #dc3545; text-transform: uppercase; letter-spacing: 1px;"><i class="fas fa-lock" style="margin-right: 4px;"></i> Staff</div>
+        <input type="text" name="heading" placeholder="Custom Poster Heading..." style="padding: 0.6rem 1.2rem; border-radius: 40px; border: none; font-size: 0.95rem; min-width: 220px; outline: none; background: transparent; color: #0f2a3f; font-weight: 500;">
+        <button type="submit" style="background: linear-gradient(135deg, #0d47a1 0%, #1565c0 100%); color: white; padding: 0.7rem 1.4rem; border-radius: 40px; border: none; font-weight: 600; cursor: pointer; transition: all 0.3s; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 10px rgba(13, 71, 161, 0.2);">
             <i class="fas fa-file-pdf"></i> Generate
         </button>
     </form>
+    {% endif %}
 </div>
 
 <div class="filter-bar">
-    <span class="filter-label"><i class="fas fa-filter"></i> show:</span>
+    <span class="filter-label"><i class="fas fa-filter"></i> filter:</span>
     <button class="filter-btn active" onclick="filterEvents('All')"><i class="fas fa-globe"></i> All</button>
     {% for cat in categories %}
         <button class="filter-btn" onclick="filterEvents('{{ cat.slug }}')">{{ cat.name }}</button>
     {% endfor %}
-    <span class="event-counter"><i class="far fa-calendar-alt"></i> <span id="count-num">{{ events|length }}</span> upcoming</span>
+    <span class="event-counter"><i class="far fa-calendar-alt"></i> <span id="count-num" style="font-size: 1.1rem;">{{ events|length }}</span> upcoming</span>
 </div>
 
 <div class="events-container" id="events-container">
@@ -257,37 +321,39 @@
                 </h2>
                 
                 <div class="event-meta">
-                    <span class="event-meta-item"><i class="far fa-calendar"></i> {{ ev.date|date:"F j, Y" }}</span>
+                    <span class="event-meta-item"><i class="far fa-calendar"></i> {{ ev.date|date:"l, F j, Y" }}</span>
                     <span class="event-meta-item"><i class="far fa-clock"></i> {{ ev.start_time|time:"g:i A" }} - {{ ev.end_time|time:"g:i A" }}</span>
                     <span class="event-meta-item"><i class="fas fa-map-marker-alt"></i> {{ ev.location }}</span>
                 </div>
 
-                <div style="display: flex; gap: 8px; margin: 0.8rem 0; flex-wrap: wrap;">
+                <div style="display: flex; gap: 10px; margin: 1.2rem 0 0.8rem; flex-wrap: wrap;">
                     {% if ev.requires_registration %}
-                        <span style="background-color: #f8f9fa; color: #0d47a1; border: 1px solid #0d47a1; padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Registration Required</span>
+                        <span style="background-color: #f0f4fa; color: #0d47a1; border: 1px solid #cdd9e6; padding: 6px 14px; border-radius: 8px; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; box-shadow: 0 2px 4px rgba(0,0,0,0.02);"><i class="fas fa-ticket-alt" style="margin-right: 6px;"></i>Registration Required</span>
                         {% if ev.capacity %}
                             {% if ev.is_full %}
-                                <span style="background-color: #fff1f0; color: #cf1322; border: 1px solid #ffa39e; padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Capacity Reached</span>
+                                <span style="background-color: #fff1f0; color: #cf1322; border: 1px solid #ffa39e; padding: 6px 14px; border-radius: 8px; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; box-shadow: 0 2px 4px rgba(0,0,0,0.02);"><i class="fas fa-times-circle" style="margin-right: 6px;"></i>Capacity Reached</span>
                             {% else %}
-                                <span style="background-color: #f6ffed; color: #389e0d; border: 1px solid #b7eb8f; padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Limited Seating</span>
+                                <span style="background-color: #f6ffed; color: #389e0d; border: 1px solid #b7eb8f; padding: 6px 14px; border-radius: 8px; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; box-shadow: 0 2px 4px rgba(0,0,0,0.02);"><i class="fas fa-chair" style="margin-right: 6px;"></i>Limited Seating</span>
                             {% endif %}
                         {% endif %}
                     {% else %}
-                        <span style="background-color: #f8f9fa; color: #495057; border: 1px solid #ced4da; padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Open to All</span>
+                        <span style="background-color: #f8f9fa; color: #495057; border: 1px solid #ced4da; padding: 6px 14px; border-radius: 8px; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; box-shadow: 0 2px 4px rgba(0,0,0,0.02);"><i class="fas fa-door-open" style="margin-right: 6px;"></i>Open to All</span>
                     {% endif %}
                 </div>
 
                 <p class="event-description">{{ ev.description|truncatewords:40 }}</p>
                 <div class="event-footer">
                     <span class="category-badge cat-{{ ev.category.slug|default:'default' }}">{{ ev.category.name|default:"General" }}</span>
-                    <a href="{% url 'events:detail' ev.slug %}" class="more-link"><i class="fas fa-chevron-circle-right"></i> event details</a>
+                    <a href="{% url 'events:detail' ev.slug %}" class="more-link">View Details <i class="fas fa-arrow-right"></i></a>
                 </div>
             </div>
         </div>
     {% empty %}
-        <div style="background: white; border-radius: 50px; padding: 3rem 2rem; text-align: center; color: #5c6f87; font-size: 1.3rem; box-shadow: 0 6px 18px rgba(0,0,0,0.05);">
-            <i class="far fa-calendar-times" style="font-size: 3rem; opacity: 0.5; margin-bottom: 1rem;"></i><br>
-            No upcoming events. Check back soon!
+        <div style="background: white; border-radius: 40px; padding: 5rem 2rem; text-align: center; color: #5c6f87; font-size: 1.4rem; font-weight: 500; box-shadow: 0 10px 30px rgba(0,30,50,0.05); border: 2px dashed #e0e8f2;">
+            <div style="width: 80px; height: 80px; background: #f0f4fa; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem;">
+                <i class="far fa-calendar-times" style="font-size: 2.5rem; color: #0d47a1; opacity: 0.7;"></i>
+            </div>
+            No upcoming events at the moment.<br><span style="font-size: 1.1rem; font-weight: 400; opacity: 0.8;">Check back soon for new workshops and gatherings!</span>
         </div>
     {% endfor %}
 </div>
@@ -295,7 +361,7 @@
 
 {% block extra_js %}
 <script>
-    // 🚀 NEW: Slider JavaScript
+    // Slider JavaScript
     let currentSlide = 0;
     const slides = document.querySelectorAll('.slide');
     const dots = document.querySelectorAll('.nav-dot');
@@ -319,11 +385,11 @@
         slideInterval = setInterval(() => {
             let nextSlide = (currentSlide + 1) % slides.length;
             showSlide(nextSlide);
-        }, 5000);
+        }, 6000); // Slowed down slightly to let the new image zoom effect play out beautifully
     }
     startSlideshow();
 
-    // Your original filter JavaScript
+    // Filter JavaScript
     function filterEvents(categorySlug) {
         const buttons = document.querySelectorAll('.filter-btn');
         buttons.forEach(btn => btn.classList.remove('active'));
@@ -333,6 +399,11 @@
         let visibleCount = 0;
 
         cards.forEach(card => {
+            // Reset animation to re-trigger it when filtering
+            card.style.animation = 'none';
+            card.offsetHeight; /* trigger reflow */
+            card.style.animation = null;
+
             if (categorySlug === 'All' || card.getAttribute('data-category') === categorySlug) {
                 card.classList.remove('hidden');
                 visibleCount++;
@@ -341,7 +412,12 @@
             }
         });
 
-        document.getElementById('count-num').innerText = visibleCount;
+        // Add a little pop animation to the number when it changes
+        const countSpan = document.getElementById('count-num');
+        countSpan.innerText = visibleCount;
+        countSpan.style.transform = 'scale(1.3)';
+        countSpan.style.transition = 'transform 0.2s';
+        setTimeout(() => countSpan.style.transform = 'scale(1)', 200);
     }
 </script>
 {% endblock %}
