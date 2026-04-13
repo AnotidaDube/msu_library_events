@@ -134,7 +134,11 @@
     .event-month { font-size: 1.2rem; text-transform: uppercase; font-weight: 500; letter-spacing: 1px; opacity: 0.9; }
 
     .event-details { flex: 1; }
-    .event-title { font-size: 1.7rem; font-weight: 600; color: #0f2a3f; margin-bottom: 0.5rem; line-height: 1.2; }
+    
+    /* Updated Event Title CSS to make it clickable and stylish */
+    .event-title { font-size: 1.7rem; font-weight: 600; margin-bottom: 0.5rem; line-height: 1.2; }
+    .event-title a { color: #0f2a3f; text-decoration: none; transition: color 0.2s; }
+    .event-title a:hover { color: #0d47a1; text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 4px; }
     
     .event-meta { display: flex; align-items: center; gap: 1.2rem; flex-wrap: wrap; margin: 0.7rem 0 0.5rem; color: #3a546d; font-size: 1rem; }
     .event-meta-item { display: flex; align-items: center; gap: 6px; background: #f0f6fd; padding: 0.3rem 0.9rem; border-radius: 30px; }
@@ -143,13 +147,23 @@
     .event-description { color: #2c4258; font-size: 1.05rem; margin: 0.8rem 0 0.8rem; line-height: 1.5; max-width: 75ch; border-left: 3px solid #dde7f0; padding-left: 1.2rem; }
     .event-footer { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; margin-top: 0.5rem; }
 
-    .category-badge { font-size: 0.85rem; font-weight: 600; padding: 0.4rem 1.2rem; border-radius: 40px; color: white; text-transform: capitalize; letter-spacing: 0.3px; box-shadow: inset 0 -1px 3px rgba(0,0,0,0.1); }
+    /* Updated Category Badge CSS to ensure text is never invisible */
+    .category-badge { 
+        background: #597a9d; /* Default background so white text is always visible */
+        font-size: 0.85rem; 
+        font-weight: 600; 
+        padding: 0.4rem 1.2rem; 
+        border-radius: 40px; 
+        color: white; 
+        text-transform: capitalize; 
+        letter-spacing: 0.3px; 
+        box-shadow: inset 0 -1px 3px rgba(0,0,0,0.1); 
+    }
     
     .cat-undergraduates { background: #f3aa5a; }
     .cat-postgraduates { background: #2aa876; }
-    .cat-academic { background: #c0576b; }
+    .cat-academic, .cat-academics { background: #c0576b; } /* Added both singular and plural */
     .cat-library { background: #9b6fc4; }
-    .cat-default { background: #597a9d; }
 
     .more-link {
         color: #0d47a1;
@@ -238,7 +252,10 @@
                 <span class="event-month">{{ ev.date|date:"M" }}</span>
             </div>
             <div class="event-details">
-                <h2 class="event-title">{{ ev.title }}</h2>
+                <h2 class="event-title">
+                    <a href="{% url 'events:detail' ev.slug %}">{{ ev.title }}</a>
+                </h2>
+                
                 <div class="event-meta">
                     <span class="event-meta-item"><i class="far fa-calendar"></i> {{ ev.date|date:"F j, Y" }}</span>
                     <span class="event-meta-item"><i class="far fa-clock"></i> {{ ev.start_time|time:"g:i A" }} - {{ ev.end_time|time:"g:i A" }}</span>
