@@ -4,6 +4,8 @@ from django.utils.html import format_html
 from xhtml2pdf import pisa
 from django.template.loader import render_to_string
 from django.http import HttpResponse
+from django.forms import CheckboxSelectMultiple
+from django.db import models
 
 # 1. DEFINE THE MULTI-POSTER GENERATOR FUNCTION
 @admin.action(description='Generate Multi-Event Poster (PDF)')
@@ -38,13 +40,23 @@ class AgendaItemInline(admin.TabularInline):
 
 @admin.register(Event)
 class EventAdmin(admin.ModelAdmin):
-    list_display = ('title', 'date', 'start_time', 'location', 'category', 'requires_registration', 'capacity')
-    list_filter = ('requires_registration', 'category', 'date')
+    formfield_overrides = {
+        models.ManyToManyField: {'widget': CheckboxSelectMultiple},
+    }
+    list_display = ('title', 'date', 'start_time', 'quarter', 'location', 'display_categories', 'requires_registration', 'capacity')
+    list_filter = ('requires_registration', 'quarter', 'categories', 'date')
     search_fields = ('title', 'location', 'description')
     prepopulated_fields = {'slug': ('title',)}
     readonly_fields = ('shareable_link',)
     inlines = [AgendaItemInline]
     actions = [generate_multi_poster]
+
+    def display_categories(self, obj):
+        # This loops through all chosen categories and joins them with a comma
+        return ", ".join([str(category) for category in obj.categories.all()])
+    
+    # This sets the column header name in the admin panel
+    display_categories.short_description = 'Categories'
 
     def shareable_link(self, obj):
         if obj.id:

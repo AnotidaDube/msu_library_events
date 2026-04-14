@@ -17,12 +17,25 @@ class AudienceCategory(models.Model):
         return self.name
 
 class Event(models.Model):
+    QUARTER_CHOICES = [
+        ('Q1', '1st Quarter'),
+        ('Q2', '2nd Quarter'),
+        ('Q3', '3rd Quarter'),
+        ('Q4', '4th Quarter'),
+    ]
     title = models.CharField(max_length=200)
     slug = models.SlugField(unique=True, blank=True)
     description = models.TextField()
     date = models.DateField()
-    start_time = models.TimeField()
-    end_time = models.TimeField()
+    quarter = models.CharField(
+        max_length=2, 
+        choices=QUARTER_CHOICES, 
+        null=True, 
+        blank=True,
+        help_text="Select the academic quarter for this event"
+    )
+    start_time = models.TimeField(null=True, blank=True)
+    end_time = models.TimeField(null=True, blank=True)
     
     # We use a standard CharField for location so it is a simple text input, not a dropdown.
     location = models.CharField(max_length=200, help_text="Venue name or online meeting link")
@@ -33,13 +46,14 @@ class Event(models.Model):
         blank=True, 
         help_text="Maximum attendees allowed. Leave blank for unlimited."
     )
-    category = models.ForeignKey(AudienceCategory, on_delete=models.SET_NULL, null=True, related_name='events')
+    categories = models.ManyToManyField(AudienceCategory, blank=True)
     created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='created_events')
     created_at = models.DateTimeField(auto_now_add=True)
     requires_registration = models.BooleanField(
         default=True,
         help_text="Uncheck this if the event is open to everyone (no RSVP needed)."
     )
+    
     
 
     class Meta:
