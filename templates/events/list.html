@@ -18,11 +18,11 @@
     .hero-slider {
         position: relative;
         width: 100%;
-        height: 340px; /* Slightly taller for more impact */
+        height: 340px; 
         border-radius: 32px;
         overflow: hidden;
         margin-bottom: 2.5rem;
-        box-shadow: 0 20px 40px -10px rgba(13, 71, 161, 0.15); /* Richer, colored shadow */
+        box-shadow: 0 20px 40px -10px rgba(13, 71, 161, 0.15); 
         border: 1px solid rgba(255, 255, 255, 0.8);
     }
     
@@ -39,7 +39,6 @@
     
     .slide.active { opacity: 1; z-index: 1; }
     
-    /* Subtle slow-zoom effect on the active background image */
     .slide.active .slide-bg {
         animation: imageZoom 8s linear forwards; 
     }
@@ -58,7 +57,7 @@
         width: 100%;
         padding: 80px 40px 35px 40px;
         color: white;
-        backdrop-filter: blur(2px); /* Slight glass effect on text background */
+        backdrop-filter: blur(2px); 
     }
     
     .slide-title { 
@@ -79,17 +78,23 @@
     /* Frosted Glass Filter Bar */
     .filter-bar {
         display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        gap: 12px;
+        flex-direction: column; /* Stack the filter rows */
+        gap: 15px;
         margin-bottom: 3rem;
         background: rgba(255, 255, 255, 0.7);
         backdrop-filter: blur(12px);
         -webkit-backdrop-filter: blur(12px);
-        padding: 1.2rem 2rem;
-        border-radius: 60px;
+        padding: 1.5rem 2rem;
+        border-radius: 30px;
         box-shadow: 0 8px 24px rgba(0, 20, 30, 0.04);
         border: 1px solid rgba(255, 255, 255, 0.8);
+    }
+
+    .filter-row {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 12px;
     }
 
     .filter-label { font-weight: 700; color: #0d47a1; margin-right: 8px; font-size: 1.05rem; text-transform: uppercase; letter-spacing: 1px;}
@@ -147,7 +152,6 @@
         opacity: 0;
     }
     
-    /* Stagger the entrance animation of the cards */
     .event-card:nth-child(1) { animation-delay: 0.1s; }
     .event-card:nth-child(2) { animation-delay: 0.2s; }
     .event-card:nth-child(3) { animation-delay: 0.3s; }
@@ -174,7 +178,6 @@
         overflow: hidden;
     }
     
-    /* Subtle shine effect on the badge */
     .event-date::after {
         content: '';
         position: absolute;
@@ -202,6 +205,8 @@
     
     .event-footer { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; margin-top: 1.5rem; padding-top: 1.2rem; border-top: 1px dashed #e0e8f2; }
 
+    .badges-container { display: flex; gap: 8px; flex-wrap: wrap; }
+
     .category-badge { 
         background: #597a9d; 
         font-size: 0.85rem; 
@@ -218,6 +223,7 @@
     .cat-postgraduates { background: linear-gradient(135deg, #2aa876 0%, #1e875d 100%); }
     .cat-academic, .cat-academics { background: linear-gradient(135deg, #c0576b 0%, #a23f52 100%); }
     .cat-library { background: linear-gradient(135deg, #9b6fc4 0%, #7d4ba8 100%); }
+    .badge-quarter { background: linear-gradient(135deg, #34495e 0%, #2c3e50 100%); }
 
     .more-link {
         display: inline-flex;
@@ -243,7 +249,7 @@
         .event-date { display: flex; width: 100%; min-width: 100%; align-items: baseline; justify-content: center; gap: 12px; padding: 0.8rem; border-radius: 20px; }
         .event-day { font-size: 2.2rem; }
         .event-month { font-size: 1.2rem; margin-top: 0; }
-        .filter-bar { padding: 1rem; justify-content: center; }
+        .filter-row { justify-content: center; }
         .event-counter { width: 100%; text-align: center; margin-top: 10px; }
         .slide-content { padding: 40px 20px 20px 20px; }
         .slide-title { font-size: 2rem; }
@@ -300,17 +306,32 @@
 </div>
 
 <div class="filter-bar">
-    <span class="filter-label"><i class="fas fa-filter"></i> filter:</span>
-    <button class="filter-btn active" onclick="filterEvents('All')"><i class="fas fa-globe"></i> All</button>
-    {% for cat in categories %}
-        <button class="filter-btn" onclick="filterEvents('{{ cat.slug }}')">{{ cat.name }}</button>
-    {% endfor %}
-    <span class="event-counter"><i class="far fa-calendar-alt"></i> <span id="count-num" style="font-size: 1.1rem;">{{ events|length }}</span> upcoming</span>
+    <div class="filter-row">
+        <span class="filter-label"><i class="fas fa-users"></i> Audience:</span>
+        <button class="filter-btn cat-filter active" data-filter="All">All Audiences</button>
+        {% for cat in categories %}
+            <button class="filter-btn cat-filter" data-filter="{{ cat.slug }}">{{ cat.name }}</button>
+        {% endfor %}
+    </div>
+    
+    <div class="filter-row">
+        <span class="filter-label"><i class="fas fa-calendar-alt"></i> Quarter:</span>
+        <button class="filter-btn q-filter active" data-filter="All">All Quarters</button>
+        <button class="filter-btn q-filter" data-filter="Q1">1st Quarter</button>
+        <button class="filter-btn q-filter" data-filter="Q2">2nd Quarter</button>
+        <button class="filter-btn q-filter" data-filter="Q3">3rd Quarter</button>
+        <button class="filter-btn q-filter" data-filter="Q4">4th Quarter</button>
+        
+        <span class="event-counter"><i class="far fa-calendar-check"></i> <span id="count-num" style="font-size: 1.1rem;">{{ events|length }}</span> upcoming</span>
+    </div>
 </div>
 
 <div class="events-container" id="events-container">
     {% for ev in events %}
-        <div class="event-card" data-category="{{ ev.category.slug|default:'none' }}">
+        <div class="event-card" 
+             data-categories="{% for cat in ev.categories.all %}{{ cat.slug }} {% endfor %}" 
+             data-quarter="{{ ev.quarter|default:'All' }}">
+            
             <div class="event-date">
                 <span class="event-day">{{ ev.date|date:"j" }}</span>
                 <span class="event-month">{{ ev.date|date:"M" }}</span>
@@ -322,7 +343,9 @@
                 
                 <div class="event-meta">
                     <span class="event-meta-item"><i class="far fa-calendar"></i> {{ ev.date|date:"l, F j, Y" }}</span>
-                    <span class="event-meta-item"><i class="far fa-clock"></i> {{ ev.start_time|time:"g:i A" }} - {{ ev.end_time|time:"g:i A" }}</span>
+                    {% if ev.start_time and ev.end_time %}
+                        <span class="event-meta-item"><i class="far fa-clock"></i> {{ ev.start_time|time:"g:i A" }} - {{ ev.end_time|time:"g:i A" }}</span>
+                    {% endif %}
                     <span class="event-meta-item"><i class="fas fa-map-marker-alt"></i> {{ ev.location }}</span>
                 </div>
 
@@ -342,8 +365,20 @@
                 </div>
 
                 <p class="event-description">{{ ev.description|truncatewords:40 }}</p>
+                
                 <div class="event-footer">
-                    <span class="category-badge cat-{{ ev.category.slug|default:'default' }}">{{ ev.category.name|default:"General" }}</span>
+                    <div class="badges-container">
+                        {% for cat in ev.categories.all %}
+                            <span class="category-badge cat-{{ cat.slug }}">{{ cat.name }}</span>
+                        {% empty %}
+                            <span class="category-badge">General</span>
+                        {% endfor %}
+                        
+                        {% if ev.quarter %}
+                            <span class="category-badge badge-quarter">{{ ev.get_quarter_display }}</span>
+                        {% endif %}
+                    </div>
+                    
                     <a href="{% url 'events:detail' ev.slug %}" class="more-link">View Details <i class="fas fa-arrow-right"></i></a>
                 </div>
             </div>
@@ -385,16 +420,42 @@
         slideInterval = setInterval(() => {
             let nextSlide = (currentSlide + 1) % slides.length;
             showSlide(nextSlide);
-        }, 6000); // Slowed down slightly to let the new image zoom effect play out beautifully
+        }, 6000); 
     }
     startSlideshow();
 
-    // Filter JavaScript
-    function filterEvents(categorySlug) {
-        const buttons = document.querySelectorAll('.filter-btn');
-        buttons.forEach(btn => btn.classList.remove('active'));
-        event.currentTarget.classList.add('active');
+    // SMART MULTI-FILTER JAVASCRIPT
+    let activeCategory = 'All';
+    let activeQuarter = 'All';
 
+    // 1. Listen for clicks on Category buttons
+    document.querySelectorAll('.cat-filter').forEach(btn => {
+        btn.addEventListener('click', function() {
+            // Remove active state from all category buttons, add to the clicked one
+            document.querySelectorAll('.cat-filter').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            
+            // Update our active variable and run the filter engine
+            activeCategory = this.getAttribute('data-filter');
+            applyFilters();
+        });
+    });
+
+    // 2. Listen for clicks on Quarter buttons
+    document.querySelectorAll('.q-filter').forEach(btn => {
+        btn.addEventListener('click', function() {
+            // Remove active state from all quarter buttons, add to the clicked one
+            document.querySelectorAll('.q-filter').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            
+            // Update our active variable and run the filter engine
+            activeQuarter = this.getAttribute('data-filter');
+            applyFilters();
+        });
+    });
+
+    // 3. The Filter Engine
+    function applyFilters() {
         const cards = document.querySelectorAll('.event-card');
         let visibleCount = 0;
 
@@ -404,7 +465,15 @@
             card.offsetHeight; /* trigger reflow */
             card.style.animation = null;
 
-            if (categorySlug === 'All' || card.getAttribute('data-category') === categorySlug) {
+            // Get the data from the HTML card
+            const cardCategories = card.getAttribute('data-categories');
+            const cardQuarter = card.getAttribute('data-quarter');
+
+            // Check if the card matches BOTH the chosen category AND the chosen quarter
+            const matchesCategory = (activeCategory === 'All' || cardCategories.includes(activeCategory));
+            const matchesQuarter = (activeQuarter === 'All' || cardQuarter === activeQuarter);
+
+            if (matchesCategory && matchesQuarter) {
                 card.classList.remove('hidden');
                 visibleCount++;
             } else {
@@ -412,7 +481,7 @@
             }
         });
 
-        // Add a little pop animation to the number when it changes
+        // Update the visual counter with a pop animation
         const countSpan = document.getElementById('count-num');
         countSpan.innerText = visibleCount;
         countSpan.style.transform = 'scale(1.3)';

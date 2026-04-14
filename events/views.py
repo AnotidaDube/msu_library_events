@@ -41,7 +41,7 @@ def event_list(request):
     
     # Fetch events from the database that happen today or in the future
     # .select_related() makes the database query faster when grabbing the category name
-    upcoming_events = Event.objects.filter(date__gte=today).select_related('category')
+    upcoming_events = Event.objects.filter(date__gte=today).select_related('categories')
     
     # Fetch all categories to build the filter buttons dynamically
     categories = AudienceCategory.objects.all()
