@@ -149,25 +149,32 @@ def calendar_view(request):
     return render(request, 'events/calendar.html')
 
 def calendar_api(request):
-    # This view grabs all events and formats them for FullCalendar.js
     events = Event.objects.all()
     events_data = []
     
     for event in events:
-        # Combine date and time into ISO 8601 format (which FullCalendar requires)
-        start_datetime = f"{event.date.isoformat()}T{event.start_time.strftime('%H:%M:%S')}"
-        end_datetime = f"{event.date.isoformat()}T{event.end_time.strftime('%H:%M:%S')}"
+        # 1. Always start with the date
+        start_datetime = event.date.isoformat()
         
-        events_data.append({
+        # 2. Only append the time if it actually exists in the database
+        if event.start_time:
+            start_datetime += f"T{event.start_time.strftime('%H:%M:%S')}"
+            
+        # 3. Build the core dictionary
+        event_dict = {
             'title': event.title,
             'start': start_datetime,
-            'end': end_datetime,
-            # Generate the clickable link to the event details page
             'url': reverse('events:detail', kwargs={'slug': event.slug}),
-            'backgroundColor': '#0d47a1', # MSU Blue
-            'borderColor': '#0d47a1',
+            'backgroundColor': '#004ba0', # Official MSU Dark Blue
+            'borderColor': '#004ba0',
             'textColor': '#ffffff'
-        })
+        }
+        
+        # 4. Safely handle the end time
+        if hasattr(event, 'end_time') and event.end_time:
+            event_dict['end'] = f"{event.date.isoformat()}T{event.end_time.strftime('%H:%M:%S')}"
+            
+        events_data.append(event_dict)
         
     return JsonResponse(events_data, safe=False)
 
