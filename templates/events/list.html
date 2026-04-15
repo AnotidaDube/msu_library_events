@@ -22,7 +22,7 @@
         border-radius: 32px;
         overflow: hidden;
         margin-bottom: 2.5rem;
-        box-shadow: 0 20px 40px -10px rgba(13, 71, 161, 0.15); 
+        box-shadow: 0 20px 40px -10px rgba(0, 74, 173, 0.15); /* Updated to MSU Blue shadow */
         border: 1px solid rgba(255, 255, 255, 0.8);
     }
     
@@ -53,7 +53,7 @@
     .slide-content {
         position: absolute;
         bottom: 0;
-        background: linear-gradient(to top, rgba(13, 71, 161, 0.95) 0%, rgba(13, 71, 161, 0.4) 60%, transparent 100%);
+        background: linear-gradient(to top, rgba(0, 74, 173, 0.95) 0%, rgba(0, 74, 173, 0.4) 60%, transparent 100%);
         width: 100%;
         padding: 80px 40px 35px 40px;
         color: white;
@@ -78,7 +78,7 @@
     /* Frosted Glass Filter Bar */
     .filter-bar {
         display: flex;
-        flex-direction: column; /* Stack the filter rows */
+        flex-direction: column;
         gap: 15px;
         margin-bottom: 3rem;
         background: rgba(255, 255, 255, 0.7);
@@ -97,7 +97,7 @@
         gap: 12px;
     }
 
-    .filter-label { font-weight: 700; color: #0d47a1; margin-right: 8px; font-size: 1.05rem; text-transform: uppercase; letter-spacing: 1px;}
+    .filter-label { font-weight: 700; color: #004aad; margin-right: 8px; font-size: 1.05rem; text-transform: uppercase; letter-spacing: 1px;}
     
     .filter-btn {
         background: #ffffff;
@@ -113,14 +113,48 @@
     }
     
     .filter-btn i { margin-right: 6px; font-size: 0.9rem; transition: transform 0.3s ease; }
-    .filter-btn:hover { background: #f4f7fb; color: #0d47a1; border-color: #cdd9e6; transform: translateY(-2px); }
+    .filter-btn:hover { background: #f4f7fb; color: #004aad; border-color: #cdd9e6; transform: translateY(-2px); }
     .filter-btn:hover i { transform: scale(1.1); }
 
     .filter-btn.active {
-        background: linear-gradient(135deg, #0d47a1 0%, #1565c0 100%);
+        background: linear-gradient(135deg, #004aad 0%, #003380 100%);
         color: white;
         border-color: transparent;
-        box-shadow: 0 8px 16px rgba(13, 71, 161, 0.25);
+        box-shadow: 0 8px 16px rgba(0, 74, 173, 0.25);
+    }
+
+    /* Live Search Input Styling */
+    .search-input-wrapper {
+        position: relative;
+        flex-grow: 1;
+        min-width: 250px;
+    }
+
+    .search-input-wrapper i {
+        position: absolute;
+        left: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #004aad;
+        font-size: 1.1rem;
+    }
+
+    .search-input {
+        width: 100%;
+        padding: 0.8rem 1rem 0.8rem 2.8rem;
+        border-radius: 40px;
+        border: 2px solid #e0e8f2;
+        font-size: 0.95rem;
+        outline: none;
+        transition: all 0.3s ease;
+        background: white;
+        color: #0a1f33;
+        font-weight: 500;
+    }
+
+    .search-input:focus {
+        border-color: #004aad;
+        box-shadow: 0 0 0 4px rgba(0, 74, 173, 0.1);
     }
 
     .event-counter {
@@ -130,7 +164,7 @@
         padding: 0.5rem 1.4rem;
         border-radius: 30px;
         font-size: 0.95rem;
-        color: #0d47a1;
+        color: #004aad;
         font-weight: 700;
         box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
     }
@@ -159,20 +193,20 @@
 
     .event-card:hover {
         transform: translateY(-6px) scale(1.01);
-        box-shadow: 0 24px 40px -12px rgba(13, 71, 161, 0.12);
-        border-color: rgba(13, 71, 161, 0.15);
+        box-shadow: 0 24px 40px -12px rgba(0, 74, 173, 0.12);
+        border-color: rgba(0, 74, 173, 0.15);
     }
 
     /* Premium Gradient Date Badge */
     .event-date {
-        background: linear-gradient(135deg, #0d47a1 0%, #1976d2 100%);
+        background: linear-gradient(135deg, #004aad 0%, #0066cc 100%);
         color: white;
         min-width: 95px;
         width: 95px;
         padding: 1.2rem 0.2rem;
         border-radius: 24px;
         text-align: center;
-        box-shadow: 0 10px 20px -5px rgba(13, 71, 161, 0.4), inset 0 2px 0 rgba(255,255,255,0.2);
+        box-shadow: 0 10px 20px -5px rgba(0, 74, 173, 0.4), inset 0 2px 0 rgba(255,255,255,0.2);
         flex-shrink: 0;
         position: relative;
         overflow: hidden;
@@ -195,11 +229,11 @@
     
     .event-title { font-size: 1.8rem; font-weight: 700; margin-bottom: 0.6rem; line-height: 1.25; letter-spacing: -0.3px; }
     .event-title a { color: #0a1f33; text-decoration: none; transition: color 0.3s ease; }
-    .event-title a:hover { color: #0d47a1; }
+    .event-title a:hover { color: #004aad; }
     
     .event-meta { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; margin: 0.8rem 0 0.8rem; color: #4a637d; font-size: 0.95rem; font-weight: 500; }
     .event-meta-item { display: flex; align-items: center; gap: 8px; background: #f4f7fb; padding: 0.4rem 1rem; border-radius: 40px; border: 1px solid #eef2f6; }
-    .event-meta-item i { color: #0d47a1; font-size: 1.1rem; opacity: 0.8; }
+    .event-meta-item i { color: #d35400; font-size: 1.1rem; opacity: 0.9; }
 
     .event-description { color: #3a546d; font-size: 1.1rem; margin: 1rem 0; line-height: 1.6; max-width: 85ch; border-left: 4px solid #e0e8f2; padding-left: 1.4rem; font-weight: 400; }
     
@@ -219,7 +253,7 @@
         box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
     }
     
-    .cat-undergraduates { background: linear-gradient(135deg, #f3aa5a 0%, #e88c30 100%); }
+    .cat-undergraduates { background: linear-gradient(135deg, #f3aa5a 0%, #d35400 100%); }
     .cat-postgraduates { background: linear-gradient(135deg, #2aa876 0%, #1e875d 100%); }
     .cat-academic, .cat-academics { background: linear-gradient(135deg, #c0576b 0%, #a23f52 100%); }
     .cat-library { background: linear-gradient(135deg, #9b6fc4 0%, #7d4ba8 100%); }
@@ -229,7 +263,7 @@
         display: inline-flex;
         align-items: center;
         gap: 6px;
-        color: #0d47a1;
+        color: #004aad;
         font-weight: 700;
         font-size: 1.05rem;
         text-decoration: none;
@@ -239,7 +273,7 @@
         transition: all 0.3s ease;
     }
 
-    .more-link:hover { background: #0d47a1; color: white; transform: translateX(5px); box-shadow: 0 6px 12px rgba(13, 71, 161, 0.2); }
+    .more-link:hover { background: #004aad; color: white; transform: translateX(5px); box-shadow: 0 6px 12px rgba(0, 74, 173, 0.2); }
     .more-link:hover i { transform: translateX(3px); transition: 0.3s; }
     
     .hidden { display: none !important; }
@@ -249,7 +283,8 @@
         .event-date { display: flex; width: 100%; min-width: 100%; align-items: baseline; justify-content: center; gap: 12px; padding: 0.8rem; border-radius: 20px; }
         .event-day { font-size: 2.2rem; }
         .event-month { font-size: 1.2rem; margin-top: 0; }
-        .filter-row { justify-content: center; }
+        .filter-row { justify-content: center; width: 100%; }
+        .search-input-wrapper { width: 100%; }
         .event-counter { width: 100%; text-align: center; margin-top: 10px; }
         .slide-content { padding: 40px 20px 20px 20px; }
         .slide-title { font-size: 2rem; }
@@ -298,7 +333,7 @@
     <form action="{% url 'events:series_poster' %}" method="GET" target="_blank" style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center; background: white; padding: 0.5rem; border-radius: 50px; border: 2px solid #e0e8f2; box-shadow: 0 8px 20px rgba(0,20,30,0.06); animation: fadeInUp 0.5s ease-out;">
         <div style="background: #f8f9fa; border-radius: 40px; padding: 4px 12px; margin-right: 4px; font-size: 0.8rem; font-weight: 700; color: #dc3545; text-transform: uppercase; letter-spacing: 1px;"><i class="fas fa-lock" style="margin-right: 4px;"></i> Staff</div>
         <input type="text" name="heading" placeholder="Custom Poster Heading..." style="padding: 0.6rem 1.2rem; border-radius: 40px; border: none; font-size: 0.95rem; min-width: 220px; outline: none; background: transparent; color: #0f2a3f; font-weight: 500;">
-        <button type="submit" style="background: linear-gradient(135deg, #0d47a1 0%, #1565c0 100%); color: white; padding: 0.7rem 1.4rem; border-radius: 40px; border: none; font-weight: 600; cursor: pointer; transition: all 0.3s; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 10px rgba(13, 71, 161, 0.2);">
+        <button type="submit" style="background: linear-gradient(135deg, #004aad 0%, #003380 100%); color: white; padding: 0.7rem 1.4rem; border-radius: 40px; border: none; font-weight: 600; cursor: pointer; transition: all 0.3s; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 10px rgba(0, 74, 173, 0.2);">
             <i class="fas fa-file-pdf"></i> Generate
         </button>
     </form>
@@ -306,6 +341,13 @@
 </div>
 
 <div class="filter-bar">
+    <div class="filter-row">
+        <div class="search-input-wrapper">
+            <i class="fas fa-search"></i>
+            <input type="text" id="live-search" class="search-input" placeholder="Search events by title, description, or location...">
+        </div>
+    </div>
+
     <div class="filter-row">
         <span class="filter-label"><i class="fas fa-users"></i> Audience:</span>
         <button class="filter-btn cat-filter active" data-filter="All">All Audiences</button>
@@ -351,7 +393,7 @@
 
                 <div style="display: flex; gap: 10px; margin: 1.2rem 0 0.8rem; flex-wrap: wrap;">
                     {% if ev.requires_registration %}
-                        <span style="background-color: #f0f4fa; color: #0d47a1; border: 1px solid #cdd9e6; padding: 6px 14px; border-radius: 8px; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; box-shadow: 0 2px 4px rgba(0,0,0,0.02);"><i class="fas fa-ticket-alt" style="margin-right: 6px;"></i>Registration Required</span>
+                        <span style="background-color: #f0f4fa; color: #004aad; border: 1px solid #cdd9e6; padding: 6px 14px; border-radius: 8px; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; box-shadow: 0 2px 4px rgba(0,0,0,0.02);"><i class="fas fa-ticket-alt" style="margin-right: 6px;"></i>Registration Required</span>
                         {% if ev.capacity %}
                             {% if ev.is_full %}
                                 <span style="background-color: #fff1f0; color: #cf1322; border: 1px solid #ffa39e; padding: 6px 14px; border-radius: 8px; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; box-shadow: 0 2px 4px rgba(0,0,0,0.02);"><i class="fas fa-times-circle" style="margin-right: 6px;"></i>Capacity Reached</span>
@@ -386,9 +428,9 @@
     {% empty %}
         <div style="background: white; border-radius: 40px; padding: 5rem 2rem; text-align: center; color: #5c6f87; font-size: 1.4rem; font-weight: 500; box-shadow: 0 10px 30px rgba(0,30,50,0.05); border: 2px dashed #e0e8f2;">
             <div style="width: 80px; height: 80px; background: #f0f4fa; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem;">
-                <i class="far fa-calendar-times" style="font-size: 2.5rem; color: #0d47a1; opacity: 0.7;"></i>
+                <i class="far fa-calendar-times" style="font-size: 2.5rem; color: #004aad; opacity: 0.7;"></i>
             </div>
-            No upcoming events at the moment.<br><span style="font-size: 1.1rem; font-weight: 400; opacity: 0.8;">Check back soon for new workshops and gatherings!</span>
+            No upcoming events match your search.<br><span style="font-size: 1.1rem; font-weight: 400; opacity: 0.8;">Try adjusting your filters or search terms!</span>
         </div>
     {% endfor %}
 </div>
@@ -424,37 +466,38 @@
     }
     startSlideshow();
 
-    // SMART MULTI-FILTER JAVASCRIPT
+    // 🚀 UPGRADED SMART MULTI-FILTER JAVASCRIPT WITH SEARCH
     let activeCategory = 'All';
     let activeQuarter = 'All';
+    let searchQuery = '';
 
-    // 1. Listen for clicks on Category buttons
+    // 1. Listen for Live Search typing
+    document.getElementById('live-search').addEventListener('input', function(e) {
+        searchQuery = e.target.value.toLowerCase().trim();
+        applyFilters();
+    });
+
+    // 2. Listen for clicks on Category buttons
     document.querySelectorAll('.cat-filter').forEach(btn => {
         btn.addEventListener('click', function() {
-            // Remove active state from all category buttons, add to the clicked one
             document.querySelectorAll('.cat-filter').forEach(b => b.classList.remove('active'));
             this.classList.add('active');
-            
-            // Update our active variable and run the filter engine
             activeCategory = this.getAttribute('data-filter');
             applyFilters();
         });
     });
 
-    // 2. Listen for clicks on Quarter buttons
+    // 3. Listen for clicks on Quarter buttons
     document.querySelectorAll('.q-filter').forEach(btn => {
         btn.addEventListener('click', function() {
-            // Remove active state from all quarter buttons, add to the clicked one
             document.querySelectorAll('.q-filter').forEach(b => b.classList.remove('active'));
             this.classList.add('active');
-            
-            // Update our active variable and run the filter engine
             activeQuarter = this.getAttribute('data-filter');
             applyFilters();
         });
     });
 
-    // 3. The Filter Engine
+    // 4. The Master Filter Engine
     function applyFilters() {
         const cards = document.querySelectorAll('.event-card');
         let visibleCount = 0;
@@ -468,12 +511,16 @@
             // Get the data from the HTML card
             const cardCategories = card.getAttribute('data-categories');
             const cardQuarter = card.getAttribute('data-quarter');
+            
+            // Extract the text content of the card for the search engine
+            const cardTextContent = card.innerText.toLowerCase();
 
-            // Check if the card matches BOTH the chosen category AND the chosen quarter
+            // Check if the card matches ALL THREE conditions
             const matchesCategory = (activeCategory === 'All' || cardCategories.includes(activeCategory));
             const matchesQuarter = (activeQuarter === 'All' || cardQuarter === activeQuarter);
+            const matchesSearch = (searchQuery === '' || cardTextContent.includes(searchQuery));
 
-            if (matchesCategory && matchesQuarter) {
+            if (matchesCategory && matchesQuarter && matchesSearch) {
                 card.classList.remove('hidden');
                 visibleCount++;
             } else {
