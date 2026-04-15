@@ -24,7 +24,7 @@ class MSUEventSystemTest(TestCase):
             slug="library-staff"
         )
         
-        # 3. Setup Event
+        # 3. Setup Event (Notice we removed the categories line here!)
         self.event = Event.objects.create(
             title="JOVE Workshop",
             slug="jove-workshop",
@@ -32,18 +32,20 @@ class MSUEventSystemTest(TestCase):
             start_time=time(10, 0),
             end_time=time(15, 0),
             location="Senate Room",
-            categories=self.categories,
             capacity=2,
             description="A training workshop for JOVE videos.",
             created_by=self.test_user  # ASSIGN THE USER HERE
         )
         
-        # 4. Setup Agenda Item
+        # 4. LINK THE CATEGORY (Must happen AFTER the event is created)
+        self.event.categories.add(self.category)
+        
+        # 5. Setup Agenda Item
         self.agenda = AgendaItem.objects.create(
             event=self.event,
             start_time=time(10, 5),
             activity="Welcome Remarks",
-            speaker="Prof Maphosa"
+            speaker="Engineer Dube"
         )
 
     # --- MODEL TESTS ---
