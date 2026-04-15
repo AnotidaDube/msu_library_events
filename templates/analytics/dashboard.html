@@ -49,9 +49,17 @@
                     </td>
                     <td style="padding: 1rem; color: #5c6f87;">{{ event.date|date:"M j, Y" }}</td>
                     <td style="padding: 1rem;">
-                        <span style="background: #eaf0f8; color: #0d47a1; padding: 4px 10px; border-radius: 20px; font-size: 0.85rem; font-weight: 600;">
-                            {{ event.category.name|default:"General" }}
-                        </span>
+                        <div style="display: flex; gap: 4px; flex-wrap: wrap;">
+                            {% for cat in event.categories.all %}
+                                <span style="background: #eaf0f8; color: #0d47a1; padding: 4px 10px; border-radius: 20px; font-size: 0.85rem; font-weight: 600;">
+                                    {{ cat.name }}
+                                </span>
+                            {% empty %}
+                                <span style="background: #eaf0f8; color: #0d47a1; padding: 4px 10px; border-radius: 20px; font-size: 0.85rem; font-weight: 600;">
+                                    General
+                                </span>
+                            {% endfor %}
+                        </div>
                     </td>
                     <td style="padding: 1rem; font-weight: 600;">
                         <span style="color: {% if event.reg_count >= event.capacity %}#c0576b{% else %}#2aa876{% endif %};">

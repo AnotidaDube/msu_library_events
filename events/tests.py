@@ -32,7 +32,7 @@ class MSUEventSystemTest(TestCase):
             start_time=time(10, 0),
             end_time=time(15, 0),
             location="Senate Room",
-            category=self.category,
+            categories=self.categories,
             capacity=2,
             description="A training workshop for JOVE videos.",
             created_by=self.test_user  # ASSIGN THE USER HERE
