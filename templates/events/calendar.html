@@ -10,41 +10,95 @@
         background: white;
         border-radius: 28px;
         padding: 2.5rem;
-        box-shadow: 0 12px 24px -8px rgba(0, 30, 50, 0.12);
+        box-shadow: 0 12px 24px -8px rgba(0, 75, 160, 0.12);
         margin-top: 1rem;
         border: 1px solid rgba(255,255,255,0.6);
     }
     
+    /* FullCalendar Header Styling */
     .fc-toolbar-title {
-        color: #0f2a3f !important;
-        font-weight: 700 !important;
+        color: var(--text-main) !important;
+        font-weight: 800 !important;
+        letter-spacing: -0.5px;
     }
     
+    /* Style the Navigation Buttons */
     .fc-button-primary {
-        background-color: #0d47a1 !important;
-        border-color: #0d47a1 !important;
+        background-color: var(--msu-dark-blue) !important;
+        border-color: var(--msu-dark-blue) !important;
         text-transform: capitalize !important;
+        font-weight: 600 !important;
+        transition: all 0.2s ease;
     }
 
     .fc-button-primary:hover {
-        background-color: #082b63 !important;
+        background-color: var(--msu-primary) !important;
+        border-color: var(--msu-primary) !important;
+    }
+
+    /* Style the Active Button (e.g., when viewing 'Month') */
+    .fc-button-primary:not(:disabled).fc-button-active, 
+    .fc-button-primary:not(:disabled):active {
+        background-color: var(--msu-primary) !important;
+        border-color: var(--msu-primary) !important;
+        box-shadow: inset 0 3px 5px rgba(0,0,0,0.2) !important;
     }
     
+    /* Style the Calendar Events */
     .fc-event {
         cursor: pointer;
-        padding: 4px;
-        border-radius: 4px;
-        font-weight: 500;
+        padding: 5px;
+        border-radius: 6px;
+        font-weight: 600;
         font-size: 0.85em;
+        border: none !important;
+        background-color: var(--msu-primary) !important; /* MSU Brand Blue */
+        transition: transform 0.2s ease, background-color 0.2s;
+        overflow: hidden; /* Keeps the moving text inside the box */
+    }
+
+    .fc-event:hover {
+        transform: scale(1.02);
+        background-color: var(--msu-dark-blue) !important;
+        z-index: 5;
+    }
+
+    /* 🚀 UX UPGRADE: Moving Text (Marquee) for Long Titles */
+    .fc-event-title-container {
+        overflow: hidden;
+        position: relative;
+    }
+
+    .fc-event-title {
+        display: inline-block;
+        white-space: nowrap;
+        /* The animation slides the text back and forth continuously */
+        animation: slideText 6s linear infinite alternate;
+    }
+
+    /* Pause the moving text when the user hovers over it to click */
+    .fc-event:hover .fc-event-title {
+        animation-play-state: paused;
+    }
+
+    /* The Math behind the moving text */
+    @keyframes slideText {
+        0%, 15% { transform: translateX(0); } /* Wait for a second at the start */
+        85%, 100% { transform: translateX(-35%); } /* Slide text to the left, then wait before bouncing back */
+    }
+
+    /* Highlight Today's Cell */
+    .fc-day-today {
+        background-color: #f0f6fd !important;
     }
 </style>
 {% endblock %}
 
 {% block content %}
 <div class="calendar-container">
-    <div style="margin-bottom: 2rem;">
-        <h1 style="font-size: 2.2rem; color: #0f2a3f; font-weight: 700;">Library Events Calendar</h1>
-        <p style="color: #5c6f87; font-size: 1.1rem;">View all upcoming workshops, seminars, and training sessions at a glance.</p>
+    <div style="margin-bottom: 2rem; border-bottom: 2px solid #f0f4fa; padding-bottom: 1.5rem;">
+        <h1 style="font-size: 2.4rem; color: var(--text-main); font-weight: 800; margin-bottom: 0.5rem; letter-spacing: -0.5px;">Library Events Calendar</h1>
+        <p style="color: var(--msu-secondary); font-size: 1.15rem; font-weight: 400;">View all upcoming workshops, seminars, and training sessions at a glance.</p>
     </div>
 
     <div id="calendar"></div>

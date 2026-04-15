@@ -3,73 +3,76 @@
 {% block title %}Analytics Dashboard - MSU Library{% endblock %}
 
 {% block content %}
-<div style="background: white; border-radius: 28px; padding: 2.5rem; box-shadow: 0 12px 24px -8px rgba(0, 30, 50, 0.12); margin-top: 1rem;">
+<div style="background: white; border-radius: 28px; padding: 2.5rem; box-shadow: 0 12px 24px -8px rgba(0, 75, 160, 0.12); margin-top: 1rem;">
     
     <div style="border-bottom: 2px solid #f0f4fa; padding-bottom: 1.5rem; margin-bottom: 2rem;">
-        <h1 style="font-size: 2.2rem; color: #0f2a3f; font-weight: 700;">Staff Analytics Dashboard</h1>
-        <p style="color: #5c6f87; font-size: 1.1rem;">Overview of library event engagement and registrations.</p>
+        <h1 style="font-size: 2.2rem; color: var(--text-main); font-weight: 800; letter-spacing: -0.5px;">Staff Analytics Dashboard</h1>
+        <p style="color: var(--msu-secondary); font-size: 1.15rem;">Overview of library event engagement and registrations.</p>
     </div>
 
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-bottom: 3rem;">
-        <div style="background: #eaf0f8; padding: 1.5rem; border-radius: 16px; border: 1px solid #cdd9e6; text-align: center;">
-            <i class="fas fa-calendar-check" style="font-size: 2rem; color: #0d47a1; margin-bottom: 0.5rem;"></i>
-            <h3 style="font-size: 2.5rem; color: #0f2a3f; font-weight: 700; margin: 0;">{{ upcoming_events_count }}</h3>
-            <p style="color: #3a546d; font-weight: 600; text-transform: uppercase; font-size: 0.85rem;">Upcoming Events</p>
+        <div style="background: #eaf0f8; padding: 1.5rem; border-radius: 16px; border: 1px solid #cdd9e6; text-align: center; transition: transform 0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.02);">
+            <i class="fas fa-calendar-check" style="font-size: 2rem; color: var(--msu-primary); margin-bottom: 0.5rem;"></i>
+            <h3 style="font-size: 2.5rem; color: var(--text-main); font-weight: 800; margin: 0;">{{ upcoming_events_count }}</h3>
+            <p style="color: var(--msu-secondary); font-weight: 700; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.5px;">Upcoming Events</p>
         </div>
         
-        <div style="background: #eaf6f1; padding: 1.5rem; border-radius: 16px; border: 1px solid #bce3d1; text-align: center;">
-            <i class="fas fa-ticket-alt" style="font-size: 2rem; color: #2aa876; margin-bottom: 0.5rem;"></i>
-            <h3 style="font-size: 2.5rem; color: #0f2a3f; font-weight: 700; margin: 0;">{{ total_registrations }}</h3>
-            <p style="color: #3a546d; font-weight: 600; text-transform: uppercase; font-size: 0.85rem;">Total Registrations</p>
+        <div style="background: #eaf6f1; padding: 1.5rem; border-radius: 16px; border: 1px solid #bce3d1; text-align: center; transition: transform 0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.02);">
+            <i class="fas fa-ticket-alt" style="font-size: 2rem; color: #018e11; margin-bottom: 0.5rem;"></i>
+            <h3 style="font-size: 2.5rem; color: var(--text-main); font-weight: 800; margin: 0;">{{ total_registrations }}</h3>
+            <p style="color: var(--msu-secondary); font-weight: 700; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.5px;">Total Registrations</p>
         </div>
 
-        <div style="background: #fdf2f4; padding: 1.5rem; border-radius: 16px; border: 1px solid #f5c6cb; text-align: center;">
-            <i class="fas fa-history" style="font-size: 2rem; color: #c0576b; margin-bottom: 0.5rem;"></i>
-            <h3 style="font-size: 2.5rem; color: #0f2a3f; font-weight: 700; margin: 0;">{{ total_events }}</h3>
-            <p style="color: #3a546d; font-weight: 600; text-transform: uppercase; font-size: 0.85rem;">All-Time Events</p>
+        <div style="background: #fdf2f4; padding: 1.5rem; border-radius: 16px; border: 1px solid #f5c6cb; text-align: center; transition: transform 0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.02);">
+            <i class="fas fa-history" style="font-size: 2rem; color: #ff5062; margin-bottom: 0.5rem;"></i>
+            <h3 style="font-size: 2.5rem; color: var(--text-main); font-weight: 800; margin: 0;">{{ total_events }}</h3>
+            <p style="color: var(--msu-secondary); font-weight: 700; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.5px;">All-Time Events</p>
         </div>
     </div>
 
-    <h2 style="font-size: 1.5rem; color: #0f2a3f; font-weight: 700; margin-bottom: 1rem;">Most Popular Upcoming Events</h2>
-    <div style="overflow-x: auto;">
+    <h2 style="font-size: 1.6rem; color: var(--text-main); font-weight: 800; margin-bottom: 1.2rem; letter-spacing: -0.3px;">Most Popular Upcoming Events</h2>
+    <div style="overflow-x: auto; border-radius: 12px; border: 1px solid #e0e8f2; box-shadow: 0 4px 15px rgba(0,0,0,0.03);">
         <table style="width: 100%; border-collapse: collapse; text-align: left;">
             <thead>
-                <tr style="background: #0d47a1; color: white;">
-                    <th style="padding: 1rem; border-top-left-radius: 8px;">Event Title</th>
-                    <th style="padding: 1rem;">Date</th>
-                    <th style="padding: 1rem;">Audience</th>
-                    <th style="padding: 1rem; border-top-right-radius: 8px;">Registrations</th>
+                <tr style="background: var(--msu-dark-blue); color: white;">
+                    <th style="padding: 1.2rem 1rem; font-weight: 600; letter-spacing: 0.5px;">Event Title</th>
+                    <th style="padding: 1.2rem 1rem; font-weight: 600; letter-spacing: 0.5px;">Date</th>
+                    <th style="padding: 1.2rem 1rem; font-weight: 600; letter-spacing: 0.5px;">Audience</th>
+                    <th style="padding: 1.2rem 1rem; font-weight: 600; letter-spacing: 0.5px;">Registrations</th>
                 </tr>
             </thead>
             <tbody>
                 {% for event in popular_events %}
-                <tr style="border-bottom: 1px solid #e2e8f0; {% if forloop.counter|divisibleby:2 %}background: #f8fafc;{% endif %}">
-                    <td style="padding: 1rem; font-weight: 600; color: #0f2a3f;">
-                        <a href="{% url 'events:detail' event.slug %}" style="color: #0d47a1; text-decoration: none;">{{ event.title }}</a>
+                <tr style="border-bottom: 1px solid #e2e8f0; {% if forloop.counter|divisibleby:2 %}background: #f8fafc;{% else %}background: #ffffff;{% endif %} transition: background 0.2s;">
+                    <td style="padding: 1.2rem 1rem; font-weight: 700;">
+                        <a href="{% url 'events:detail' event.slug %}" style="color: var(--msu-primary); text-decoration: none; transition: color 0.2s;">{{ event.title }}</a>
                     </td>
-                    <td style="padding: 1rem; color: #5c6f87;">{{ event.date|date:"M j, Y" }}</td>
-                    <td style="padding: 1rem;">
-                        <div style="display: flex; gap: 4px; flex-wrap: wrap;">
+                    <td style="padding: 1.2rem 1rem; color: var(--msu-secondary); font-weight: 500;">{{ event.date|date:"M j, Y" }}</td>
+                    <td style="padding: 1.2rem 1rem;">
+                        <div style="display: flex; gap: 6px; flex-wrap: wrap;">
                             {% for cat in event.categories.all %}
-                                <span style="background: #eaf0f8; color: #0d47a1; padding: 4px 10px; border-radius: 20px; font-size: 0.85rem; font-weight: 600;">
+                                <span style="background: #eaf0f8; color: var(--msu-dark-blue); padding: 4px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: 700; border: 1px solid #cdd9e6;">
                                     {{ cat.name }}
                                 </span>
                             {% empty %}
-                                <span style="background: #eaf0f8; color: #0d47a1; padding: 4px 10px; border-radius: 20px; font-size: 0.85rem; font-weight: 600;">
+                                <span style="background: #eaf0f8; color: var(--msu-dark-blue); padding: 4px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: 700; border: 1px solid #cdd9e6;">
                                     General
                                 </span>
                             {% endfor %}
                         </div>
                     </td>
-                    <td style="padding: 1rem; font-weight: 600;">
-                        <span style="color: {% if event.reg_count >= event.capacity %}#c0576b{% else %}#2aa876{% endif %};">
+                    <td style="padding: 1.2rem 1rem; font-weight: 700;">
+                        <span style="color: {% if event.reg_count >= event.capacity %}#ff5062{% else %}#018e11{% endif %}; background: {% if event.reg_count >= event.capacity %}#fdf2f4{% else %}#eaf6f1{% endif %}; padding: 4px 12px; border-radius: 20px;">
                             {{ event.reg_count }} / {{ event.capacity }}
                         </span>
                     </td>
                 </tr>
                 {% empty %}
                 <tr>
-                    <td colspan="4" style="padding: 2rem; text-align: center; color: #5c6f87;">No upcoming events found.</td>
+                    <td colspan="4" style="padding: 3rem; text-align: center; color: var(--msu-secondary); font-size: 1.1rem;">
+                        <i class="far fa-folder-open" style="font-size: 2rem; color: #cdd9e6; margin-bottom: 1rem; display: block;"></i>
+                        No upcoming events found.
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>

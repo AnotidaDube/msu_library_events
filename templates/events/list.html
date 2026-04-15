@@ -22,7 +22,7 @@
         border-radius: 32px;
         overflow: hidden;
         margin-bottom: 2.5rem;
-        box-shadow: 0 20px 40px -10px rgba(0, 74, 173, 0.15); /* Updated to MSU Blue shadow */
+        box-shadow: 0 20px 40px -10px rgba(0, 75, 160, 0.15); /* Using subtle dark blue shadow */
         border: 1px solid rgba(255, 255, 255, 0.8);
     }
     
@@ -53,7 +53,8 @@
     .slide-content {
         position: absolute;
         bottom: 0;
-        background: linear-gradient(to top, rgba(0, 74, 173, 0.95) 0%, rgba(0, 74, 173, 0.4) 60%, transparent 100%);
+        /* Gradient using the MSU Dark Blue to Primary Blue */
+        background: linear-gradient(to top, rgba(0, 75, 160, 0.95) 0%, rgba(74, 142, 255, 0.4) 60%, transparent 100%);
         width: 100%;
         padding: 80px 40px 35px 40px;
         color: white;
@@ -97,12 +98,12 @@
         gap: 12px;
     }
 
-    .filter-label { font-weight: 700; color: #004aad; margin-right: 8px; font-size: 1.05rem; text-transform: uppercase; letter-spacing: 1px;}
+    .filter-label { font-weight: 700; color: var(--msu-dark-blue); margin-right: 8px; font-size: 1.05rem; text-transform: uppercase; letter-spacing: 1px;}
     
     .filter-btn {
         background: #ffffff;
         border: 1px solid #e0e8f2;
-        color: #5c6f87;
+        color: var(--msu-secondary);
         font-size: 0.95rem;
         font-weight: 600;
         padding: 0.6rem 1.4rem;
@@ -113,14 +114,14 @@
     }
     
     .filter-btn i { margin-right: 6px; font-size: 0.9rem; transition: transform 0.3s ease; }
-    .filter-btn:hover { background: #f4f7fb; color: #004aad; border-color: #cdd9e6; transform: translateY(-2px); }
+    .filter-btn:hover { background: #f4f7fb; color: var(--msu-primary); border-color: #cdd9e6; transform: translateY(-2px); }
     .filter-btn:hover i { transform: scale(1.1); }
 
     .filter-btn.active {
-        background: linear-gradient(135deg, #004aad 0%, #003380 100%);
+        background: var(--msu-primary);
         color: white;
         border-color: transparent;
-        box-shadow: 0 8px 16px rgba(0, 74, 173, 0.25);
+        box-shadow: 0 8px 16px rgba(74, 142, 255, 0.25);
     }
 
     /* Live Search Input Styling */
@@ -135,7 +136,7 @@
         left: 16px;
         top: 50%;
         transform: translateY(-50%);
-        color: #004aad;
+        color: var(--msu-primary);
         font-size: 1.1rem;
     }
 
@@ -148,13 +149,13 @@
         outline: none;
         transition: all 0.3s ease;
         background: white;
-        color: #0a1f33;
+        color: var(--text-main);
         font-weight: 500;
     }
 
     .search-input:focus {
-        border-color: #004aad;
-        box-shadow: 0 0 0 4px rgba(0, 74, 173, 0.1);
+        border-color: var(--msu-primary);
+        box-shadow: 0 0 0 4px rgba(74, 142, 255, 0.1);
     }
 
     .event-counter {
@@ -164,7 +165,7 @@
         padding: 0.5rem 1.4rem;
         border-radius: 30px;
         font-size: 0.95rem;
-        color: #004aad;
+        color: var(--msu-dark-blue);
         font-weight: 700;
         box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
     }
@@ -193,20 +194,20 @@
 
     .event-card:hover {
         transform: translateY(-6px) scale(1.01);
-        box-shadow: 0 24px 40px -12px rgba(0, 74, 173, 0.12);
-        border-color: rgba(0, 74, 173, 0.15);
+        box-shadow: 0 24px 40px -12px rgba(74, 142, 255, 0.12);
+        border-color: rgba(74, 142, 255, 0.15);
     }
 
     /* Premium Gradient Date Badge */
     .event-date {
-        background: linear-gradient(135deg, #004aad 0%, #0066cc 100%);
+        background: linear-gradient(135deg, var(--msu-dark-blue) 0%, var(--msu-primary) 100%);
         color: white;
         min-width: 95px;
         width: 95px;
         padding: 1.2rem 0.2rem;
         border-radius: 24px;
         text-align: center;
-        box-shadow: 0 10px 20px -5px rgba(0, 74, 173, 0.4), inset 0 2px 0 rgba(255,255,255,0.2);
+        box-shadow: 0 10px 20px -5px rgba(0, 75, 160, 0.4), inset 0 2px 0 rgba(255,255,255,0.2);
         flex-shrink: 0;
         position: relative;
         overflow: hidden;
@@ -228,21 +229,21 @@
     .event-details { flex: 1; }
     
     .event-title { font-size: 1.8rem; font-weight: 700; margin-bottom: 0.6rem; line-height: 1.25; letter-spacing: -0.3px; }
-    .event-title a { color: #0a1f33; text-decoration: none; transition: color 0.3s ease; }
-    .event-title a:hover { color: #004aad; }
+    .event-title a { color: var(--text-main); text-decoration: none; transition: color 0.3s ease; }
+    .event-title a:hover { color: var(--msu-primary); }
     
-    .event-meta { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; margin: 0.8rem 0 0.8rem; color: #4a637d; font-size: 0.95rem; font-weight: 500; }
+    .event-meta { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; margin: 0.8rem 0 0.8rem; color: var(--msu-secondary); font-size: 0.95rem; font-weight: 500; }
     .event-meta-item { display: flex; align-items: center; gap: 8px; background: #f4f7fb; padding: 0.4rem 1rem; border-radius: 40px; border: 1px solid #eef2f6; }
-    .event-meta-item i { color: #d35400; font-size: 1.1rem; opacity: 0.9; }
+    .event-meta-item i { color: var(--msu-warning); font-size: 1.1rem; opacity: 0.9; }
 
-    .event-description { color: #3a546d; font-size: 1.1rem; margin: 1rem 0; line-height: 1.6; max-width: 85ch; border-left: 4px solid #e0e8f2; padding-left: 1.4rem; font-weight: 400; }
+    .event-description { color: var(--msu-secondary); font-size: 1.1rem; margin: 1rem 0; line-height: 1.6; max-width: 85ch; border-left: 4px solid #e0e8f2; padding-left: 1.4rem; font-weight: 400; }
     
     .event-footer { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; margin-top: 1.5rem; padding-top: 1.2rem; border-top: 1px dashed #e0e8f2; }
 
     .badges-container { display: flex; gap: 8px; flex-wrap: wrap; }
 
     .category-badge { 
-        background: #597a9d; 
+        background: var(--msu-secondary); 
         font-size: 0.85rem; 
         font-weight: 700; 
         padding: 0.5rem 1.4rem; 
@@ -253,17 +254,17 @@
         box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
     }
     
-    .cat-undergraduates { background: linear-gradient(135deg, #f3aa5a 0%, #d35400 100%); }
+    .cat-undergraduates { background: linear-gradient(135deg, #f3aa5a 0%, var(--msu-warning) 100%); }
     .cat-postgraduates { background: linear-gradient(135deg, #2aa876 0%, #1e875d 100%); }
     .cat-academic, .cat-academics { background: linear-gradient(135deg, #c0576b 0%, #a23f52 100%); }
     .cat-library { background: linear-gradient(135deg, #9b6fc4 0%, #7d4ba8 100%); }
-    .badge-quarter { background: linear-gradient(135deg, #34495e 0%, #2c3e50 100%); }
+    .badge-quarter { background: linear-gradient(135deg, #34495e 0%, var(--text-main) 100%); }
 
     .more-link {
         display: inline-flex;
         align-items: center;
         gap: 6px;
-        color: #004aad;
+        color: var(--msu-dark-blue);
         font-weight: 700;
         font-size: 1.05rem;
         text-decoration: none;
@@ -273,7 +274,7 @@
         transition: all 0.3s ease;
     }
 
-    .more-link:hover { background: #004aad; color: white; transform: translateX(5px); box-shadow: 0 6px 12px rgba(0, 74, 173, 0.2); }
+    .more-link:hover { background: var(--msu-primary); color: white; transform: translateX(5px); box-shadow: 0 6px 12px rgba(74, 142, 255, 0.2); }
     .more-link:hover i { transform: translateX(3px); transition: 0.3s; }
     
     .hidden { display: none !important; }
@@ -325,15 +326,15 @@
 
 <div style="padding-bottom: 1.5rem; margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
     <div>
-        <h1 style="font-size: 2.4rem; color: #0a1f33; font-weight: 800; margin-bottom: 0.5rem; letter-spacing: -0.5px;">Library Events & Workshops</h1>
-        <p style="color: #5c6f87; font-size: 1.15rem; font-weight: 400;">Discover storytimes, workshops & community gatherings.</p>
+        <h1 style="font-size: 2.4rem; color: var(--text-main); font-weight: 800; margin-bottom: 0.5rem; letter-spacing: -0.5px;">Library Events & Workshops</h1>
+        <p style="color: var(--msu-secondary); font-size: 1.15rem; font-weight: 400;"></p>
     </div>
     
     {% if request.user.is_staff %}
     <form action="{% url 'events:series_poster' %}" method="GET" target="_blank" style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center; background: white; padding: 0.5rem; border-radius: 50px; border: 2px solid #e0e8f2; box-shadow: 0 8px 20px rgba(0,20,30,0.06); animation: fadeInUp 0.5s ease-out;">
         <div style="background: #f8f9fa; border-radius: 40px; padding: 4px 12px; margin-right: 4px; font-size: 0.8rem; font-weight: 700; color: #dc3545; text-transform: uppercase; letter-spacing: 1px;"><i class="fas fa-lock" style="margin-right: 4px;"></i> Staff</div>
-        <input type="text" name="heading" placeholder="Custom Poster Heading..." style="padding: 0.6rem 1.2rem; border-radius: 40px; border: none; font-size: 0.95rem; min-width: 220px; outline: none; background: transparent; color: #0f2a3f; font-weight: 500;">
-        <button type="submit" style="background: linear-gradient(135deg, #004aad 0%, #003380 100%); color: white; padding: 0.7rem 1.4rem; border-radius: 40px; border: none; font-weight: 600; cursor: pointer; transition: all 0.3s; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 10px rgba(0, 74, 173, 0.2);">
+        <input type="text" name="heading" placeholder="Custom Poster Heading..." style="padding: 0.6rem 1.2rem; border-radius: 40px; border: none; font-size: 0.95rem; min-width: 220px; outline: none; background: transparent; color: var(--text-main); font-weight: 500;">
+        <button type="submit" style="background: linear-gradient(135deg, var(--msu-dark-blue) 0%, var(--msu-primary) 100%); color: white; padding: 0.7rem 1.4rem; border-radius: 40px; border: none; font-weight: 600; cursor: pointer; transition: all 0.3s; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 10px rgba(0, 75, 160, 0.2);">
             <i class="fas fa-file-pdf"></i> Generate
         </button>
     </form>
@@ -393,7 +394,7 @@
 
                 <div style="display: flex; gap: 10px; margin: 1.2rem 0 0.8rem; flex-wrap: wrap;">
                     {% if ev.requires_registration %}
-                        <span style="background-color: #f0f4fa; color: #004aad; border: 1px solid #cdd9e6; padding: 6px 14px; border-radius: 8px; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; box-shadow: 0 2px 4px rgba(0,0,0,0.02);"><i class="fas fa-ticket-alt" style="margin-right: 6px;"></i>Registration Required</span>
+                        <span style="background-color: #f0f4fa; color: var(--msu-dark-blue); border: 1px solid #cdd9e6; padding: 6px 14px; border-radius: 8px; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; box-shadow: 0 2px 4px rgba(0,0,0,0.02);"><i class="fas fa-ticket-alt" style="margin-right: 6px;"></i>Registration Required</span>
                         {% if ev.capacity %}
                             {% if ev.is_full %}
                                 <span style="background-color: #fff1f0; color: #cf1322; border: 1px solid #ffa39e; padding: 6px 14px; border-radius: 8px; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; box-shadow: 0 2px 4px rgba(0,0,0,0.02);"><i class="fas fa-times-circle" style="margin-right: 6px;"></i>Capacity Reached</span>
@@ -402,7 +403,7 @@
                             {% endif %}
                         {% endif %}
                     {% else %}
-                        <span style="background-color: #f8f9fa; color: #495057; border: 1px solid #ced4da; padding: 6px 14px; border-radius: 8px; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; box-shadow: 0 2px 4px rgba(0,0,0,0.02);"><i class="fas fa-door-open" style="margin-right: 6px;"></i>Open to All</span>
+                        <span style="background-color: #f8f9fa; color: var(--msu-secondary); border: 1px solid #ced4da; padding: 6px 14px; border-radius: 8px; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; box-shadow: 0 2px 4px rgba(0,0,0,0.02);"><i class="fas fa-door-open" style="margin-right: 6px;"></i>Open to All</span>
                     {% endif %}
                 </div>
 
@@ -426,9 +427,9 @@
             </div>
         </div>
     {% empty %}
-        <div style="background: white; border-radius: 40px; padding: 5rem 2rem; text-align: center; color: #5c6f87; font-size: 1.4rem; font-weight: 500; box-shadow: 0 10px 30px rgba(0,30,50,0.05); border: 2px dashed #e0e8f2;">
+        <div style="background: white; border-radius: 40px; padding: 5rem 2rem; text-align: center; color: var(--msu-secondary); font-size: 1.4rem; font-weight: 500; box-shadow: 0 10px 30px rgba(0,30,50,0.05); border: 2px dashed #e0e8f2;">
             <div style="width: 80px; height: 80px; background: #f0f4fa; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem;">
-                <i class="far fa-calendar-times" style="font-size: 2.5rem; color: #004aad; opacity: 0.7;"></i>
+                <i class="far fa-calendar-times" style="font-size: 2.5rem; color: var(--msu-primary); opacity: 0.7;"></i>
             </div>
             No upcoming events match your search.<br><span style="font-size: 1.1rem; font-weight: 400; opacity: 0.8;">Try adjusting your filters or search terms!</span>
         </div>

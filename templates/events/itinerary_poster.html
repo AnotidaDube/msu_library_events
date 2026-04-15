@@ -11,97 +11,133 @@
         }
         
         body {
-            font-family: 'Helvetica', 'Arial', sans-serif;
-            color: #1d1a49;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            color: #2c3e50; /* Softer, highly readable gray-blue */
+            margin: 0;
+            padding: 0;
         }
 
-        /* --- HEADER SECTION --- *//* --- HEADER SECTION --- */
+        /* --- HEADER SECTION --- */
         .header-table {
-            width: 100%; /* xhtml2pdf usually accepts 100% on the main table */
-            margin-bottom: 20px;
+            width: 100%;
+            margin-bottom: 25px;
+            border-bottom: 3px solid #004ba0; /* MSU Dark Blue */
+            padding-bottom: 15px;
         }
 
         .logo-cell {
-            width: 150px; /* Changed from 25% */
-            text-align: center;
+            width: 20%;
+            text-align: left;
             vertical-align: top;
-            border-right: 4px solid #0d47a1;
-            padding-right: 15px;
+            padding-right: 20px;
+            border-right: 2px solid #e0e8f2;
+        }
+
+        .logo-image {
+            width: 130px;
+            height: auto;
         }
 
         .details-cell {
-            width: 450px; /* Changed from 75% */
+            width: 80%;
             vertical-align: top;
-            padding-left: 20px;
+            padding-left: 25px;
         }
 
         .banner-box {
-            background-color: #0d47a1; /* MSU Blue */
+            background-color: #004ba0; /* MSU Dark Blue */
             color: white;
-            padding: 15px;
+            padding: 18px 20px;
             margin-bottom: 15px;
+            border-radius: 4px;
         }
 
         .event-title {
             margin: 0;
-            font-size: 26pt;
+            font-size: 24pt;
             text-transform: uppercase;
-            font-weight: 900;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            line-height: 1.1;
         }
 
         .event-category {
-            font-size: 14pt;
-            margin-top: 5px;
-            color: #ffb347;
+            font-size: 13pt;
+            margin-top: 8px;
+            color: #FFB236; /* MSU Warning/Gold */
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
         }
 
         .meta-table {
             width: 100%;
-            color: #0d47a1;
-            font-weight: bold;
-            font-size: 13pt;
+            color: #004ba0; /* MSU Dark Blue */
+            font-weight: 600;
+            font-size: 12pt;
         }
 
         .meta-table td {
             padding: 4px 0;
+        }
+        
+        .meta-label {
+            width: 12%; /* Ensures alignment across the rows */
+            color: #6c757d; /* MSU Secondary Gray */
+            font-weight: 700;
+            font-size: 11pt;
         }
 
         /* --- AGENDA TABLE SECTION --- */
         .agenda-table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
+            margin-top: 10px;
         }
 
         .agenda-table th {
-            background-color: #0d47a1;
+            background-color: #004ba0; /* MSU Dark Blue */
             color: white;
-            padding: 10px;
+            padding: 12px;
             text-align: left;
-            font-size: 14pt;
-            border: 1px solid #0d47a1;
+            font-size: 13pt;
+            font-weight: 700;
+            border: 1px solid #004ba0;
         }
 
         .agenda-table td {
-            padding: 12px 10px;
+            padding: 14px 12px;
             border: 1px solid #cdd9e6;
-            font-size: 12pt;
+            font-size: 11.5pt;
+            color: #2c3e50;
+            vertical-align: top;
+            page-break-inside: avoid; /* Prevents rows from splitting across pages */
         }
 
         .time-col {
-            background-color: #eaf0f8;
-            font-weight: bold;
-            width: 120px; /* Changed from 20% */
+            background-color: #f4f7fb; /* Light background for time to distinguish it */
+            font-weight: 700;
+            width: 15%;
+            color: #004ba0;
         }
 
         .activity-col {
-            background-color: #f8fafc;
-            width: 280px; /* Changed from 45% */
+            background-color: #ffffff;
+            width: 50%;
+            line-height: 1.4;
         }
 
         .speaker-col {
-            background-color: #f8fafc;
-            width: 200px; /* Changed from 35% */
+            background-color: #ffffff;
+            width: 35%;
+            font-weight: 600;
+            color: #6c757d; /* MSU Secondary Gray */
+        }
+        
+        /* Subtle zebra striping for readability */
+        .agenda-table tbody tr:nth-child(even) td.activity-col,
+        .agenda-table tbody tr:nth-child(even) td.speaker-col {
+            background-color: #fcfdfe;
         }
     </style>
 </head>
@@ -110,8 +146,7 @@
     <table class="header-table">
         <tr>
             <td class="logo-cell">
-                <img src="{% static 'images/msu_logo.jpg' %}" />
-                
+                <img src="{% static 'images/msu_logo.jpg' %}" class="logo-image" />
             </td>
             
             <td class="details-cell">
@@ -121,9 +156,9 @@
                 </div>
                 
                 <table class="meta-table">
-                    <tr><td style="width: 15%;">DATE:</td><td>{{ event.date|date:"j F Y" }}</td></tr>
-                    <tr><td>TIME:</td><td>{{ event.start_time|time:"H:i" }} Hours</td></tr>
-                    <tr><td>VENUE:</td><td>{{ event.location }}</td></tr>
+                    <tr><td class="meta-label">DATE:</td><td>{{ event.date|date:"j F Y" }}</td></tr>
+                    <tr><td class="meta-label">TIME:</td><td>{{ event.start_time|time:"H:i" }} Hours</td></tr>
+                    <tr><td class="meta-label">VENUE:</td><td>{{ event.location }}</td></tr>
                 </table>
             </td>
         </tr>
@@ -148,7 +183,9 @@
             </tr>
             {% empty %}
             <tr>
-                <td colspan="3" style="text-align: center; padding: 20px;">No agenda items have been added to this event yet. Add them in the Admin Dashboard.</td>
+                <td colspan="3" style="text-align: center; padding: 30px; color: #6c757d;">
+                    No agenda items have been added to this event yet.
+                </td>
             </tr>
             {% endfor %}
         </tbody>
